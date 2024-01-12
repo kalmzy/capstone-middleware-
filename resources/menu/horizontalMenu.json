@@ -1,0 +1,41 @@
+{
+  "menu": [
+    {
+      "url": "/",
+      "name": "Dashboard",
+      "icon": "menu-icon tf-icons ti ti-layout-dashboard",
+      "slug": "pages-home"
+    },
+    {
+      "url": "page-2",
+      "icon": "menu-icon tf-icons ti ti-chart-area-line-filled",
+      "name": "Demand Forecasting",
+      "slug": "pages-page-2",
+      "submenu": [
+        {
+          "url": "page-2",
+          "name": "Data Statistic",
+          "slug": "pages-page-2"
+        }
+      ]
+    },
+    {
+      "url": "page-3",
+      "icon": "menu-icon tf-icons ti ti-device-desktop-analytics",
+      "name": "Quality Control",
+      "slug": "pages-page-3",
+      "submenu": [
+        {
+          "url": "page-3",
+          "name": "Quality Analysis",
+          "slug": "pages-page-3"
+        },
+        {
+          "url": "tasks",
+          "name": "Quality Report",
+          "slug": "pages-testpage"
+        }
+      ]
+    }
+  ]
+}
