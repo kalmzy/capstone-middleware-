@@ -12,6 +12,8 @@ class Task extends Model
   use HasFactory;
 
   protected $guarded = ['_token'];
+  protected $dates = ['date'];
+
 
   // rest of your model code...
 }

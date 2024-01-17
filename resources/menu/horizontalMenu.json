@@ -16,6 +16,11 @@
           "url": "page-2",
           "name": "Data Statistic",
           "slug": "pages-page-2"
+        },
+        {
+          "url": "dataCon",
+          "name": "Data Connection",
+          "slug": "pages-data-connection"
         }
       ]
     },

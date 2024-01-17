@@ -276,10 +276,20 @@
         }
       },
       yaxis: {
-        stroke: {
-          width: 0
-        },
-        show: false
+        tickAmount: 4,
+        min: 10,
+        max: 50,
+        labels: {
+          style: {
+            colors: labelColor,
+            fontSize: '13px',
+            fontFamily: 'Public Sans',
+            fontWeight: 400
+          },
+          formatter: function (val) {
+            return val + '%';
+          }
+        }
       },
       tooltip: {
         enabled: false
@@ -289,47 +299,33 @@
     const salesLastYear = new ApexCharts(salesLastYearEl, salesLastYearConfig);
     salesLastYear.render();
   }
-
-  // Profit last month Line Chart
+  // Defects Line Chart
   // --------------------------------------------------------------------
-  const profitLastMonthEl = document.querySelector('#profitLastMonth'),
-    profitLastMonthConfig = {
+  const defectsEl = document.querySelector('#defects'),
+  defectsConfig = {
       chart: {
-        height: 90,
+        height: 270,
         type: 'line',
         parentHeightOffset: 0,
         toolbar: {
           show: false
-        }
+        },
       },
       grid: {
-        borderColor: borderColor,
-        strokeDashArray: 6,
-        xaxis: {
-          lines: {
-            show: true,
-            colors: '#000'
-          }
-        },
-        yaxis: {
-          lines: {
-            show: false
-          }
-        },
-        padding: {
-          top: -18,
-          left: -4,
-          right: 7,
-          bottom: -10
-        }
+        strokeDashArray: 5
       },
-      colors: [config.colors.info],
+      colors: [config.colors.info,config.colors.success],
       stroke: {
         width: 2
       },
       series: [
         {
-          data: [0, 25, 10, 40, 25, 55]
+          name: 'defects',
+          data: [38, 45, 33, 38, 32, 50, 48, 40, 42, 37, 32, 12]
+        },
+        {
+          name: 'not recieved',
+          data: [23, 28, 23, 32, 28, 44, 32, 38, 26, 34, 35, 17]
         }
       ],
       tooltip: {
@@ -340,19 +336,37 @@
         }
       },
       xaxis: {
+        tickAmount: 10,
+        categories: ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
         labels: {
+          style: {
+            colors: labelColor,
+            fontSize: '13px',
+            fontFamily: 'Public Sans',
+            fontWeight: 400
+          }
+        },
+        axisBorder: {
           show: false
         },
         axisTicks: {
           show: false
-        },
-        axisBorder: {
-          show: false
         }
       },
       yaxis: {
+        tickAmount: 4,
+        min: 10,
+        max: 100,
         labels: {
-          show: false
+          style: {
+            colors: labelColor,
+            fontSize: '13px',
+            fontFamily: 'Public Sans',
+            fontWeight: 400
+          },
+          formatter: function (val) {
+            return val + '%';
+          }
         }
       },
       tooltip: {
@@ -363,27 +377,164 @@
         fillColor: config.colors.info,
         strokeColors: 'transparent',
         strokeWidth: 3.2,
-        discrete: [
-          {
-            seriesIndex: 0,
-            dataPointIndex: 5,
-            fillColor: cardColor,
-            strokeColor: config.colors.info,
-            size: 5,
-            shape: 'circle'
-          }
-        ],
         hover: {
           size: 5.5
         }
+      },
+      legend: {
+        show: true,
+        position: 'bottom',
+        markers: {
+          width: 8,
+          height: 8,
+          offsetX: -3
+        },
+        height: 40,
+        offsetY: 10,
+        itemMargin: {
+          horizontal: 10,
+          vertical: 0
+        },
+        fontSize: '15px',
+        fontFamily: 'Public Sans',
+        fontWeight: 400,
+        labels: {
+          colors: headingColor,
+          useSeriesColors: false
+        },
+        offsetY: 10
       },
       responsive: [
         {
           breakpoint: 768,
           options: {
             chart: {
-              height: 110
+              height: 200
             }
+
+          }
+        }
+      ]
+    };
+  if (typeof defectsEl !== undefined && defectsEl !== null) {
+    const Defect = new ApexCharts(defectsEl, defectsConfig);
+    Defect.render();
+  }
+
+
+  // Profit last month Line Chart
+  // --------------------------------------------------------------------
+  const profitLastMonthEl = document.querySelector('#profitLastMonth'),
+    profitLastMonthConfig = {
+      chart: {
+        height: 270,
+        type: 'line',
+        parentHeightOffset: 0,
+        toolbar: {
+          show: false
+        },
+      },
+      grid: {
+        strokeDashArray: 5
+      },
+      colors: [config.colors.info,config.colors.success],
+      stroke: {
+        width: 2
+      },
+      series: [
+        {
+          name: 'defects',
+          data: [38, 45, 33, 38, 32, 50, 48, 40, 42, 37, 32, 12]
+        },
+        {
+          name: 'not recieved',
+          data: [50, 28, 23, 32, 28, 44, 32, 38, 37, 34, 80, 20]
+        }
+      ],
+      tooltip: {
+        shared: false,
+        intersect: true,
+        x: {
+          show: false
+        }
+      },
+      xaxis: {
+        tickAmount: 10,
+        categories: ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
+        labels: {
+          style: {
+            colors: labelColor,
+            fontSize: '13px',
+            fontFamily: 'Public Sans',
+            fontWeight: 400
+          }
+        },
+        axisBorder: {
+          show: false
+        },
+        axisTicks: {
+          show: false
+        }
+      },
+      yaxis: {
+        tickAmount: 4,
+        min: 10,
+        max: 100,
+        labels: {
+          style: {
+            colors: labelColor,
+            fontSize: '13px',
+            fontFamily: 'Public Sans',
+            fontWeight: 400
+          },
+          formatter: function (val) {
+            return val + '%';
+          }
+        }
+      },
+      tooltip: {
+        enabled: false
+      },
+      markers: {
+        size: 3.5,
+        fillColor: config.colors.info,
+        strokeColors: 'transparent',
+        strokeWidth: 3.2,
+        hover: {
+          size: 5.5
+        }
+      },
+      legend: {
+        show: true,
+        position: 'bottom',
+        markers: {
+          width: 8,
+          height: 8,
+          offsetX: -3
+        },
+        height: 40,
+        offsetY: 10,
+        itemMargin: {
+          horizontal: 10,
+          vertical: 0
+        },
+        fontSize: '15px',
+        fontFamily: 'Public Sans',
+        fontWeight: 400,
+        labels: {
+          colors: headingColor,
+          useSeriesColors: false
+        },
+        offsetY: 10
+      },
+      responsive: [
+        {
+          breakpoint: 768,
+          options: {
+            chart: {
+              height: 200
+            }
+
           }
         }
       ]

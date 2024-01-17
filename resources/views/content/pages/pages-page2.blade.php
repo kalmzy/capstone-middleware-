@@ -24,7 +24,7 @@ $configData = Helper::appClasses();
 <script src="../../assets/js/cards-statistics.js"></script>
 @endsection
 
-@section('title', 'Home')
+@section('title', 'Demand Forecasting')
 
 @section('content')
 <style>

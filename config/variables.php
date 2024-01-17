@@ -4,7 +4,7 @@ return [
   'creatorName' => 'Pixinvent',
   'creatorUrl' => 'https://pixinvent.com',
   'templateName' => 'Bbox',
-  'templateSuffix' => 'Bootstrap Admin Template',
+  'templateSuffix' => 'Logistics',
   'templateVersion' => '1.0.0',
   'templateFree' => false,
   'templateDescription' => 'Start your development with a Dashboard for Bootstrap 5',

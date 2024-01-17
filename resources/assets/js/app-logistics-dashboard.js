@@ -47,7 +47,7 @@
         }
       ],
       chart: {
-        height: 270,
+        height: 400,
         type: 'line',
         stacked: false,
         parentHeightOffset: 0,

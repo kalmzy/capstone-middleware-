@@ -8,6 +8,7 @@ use App\Http\Controllers\pages\Page3;
 use App\Http\Controllers\authentications\LoginBasic;
 use App\Http\Controllers\authentications\RegisterBasic;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\DataController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,3 +37,4 @@ Route::get('/auth/register-basic', [RegisterBasic::class, 'index'])->name('auth-
 // routes/web.php
 
 Route::resource('tasks', TaskController::class);
+Route::resource('dataCon', DataController::class);
