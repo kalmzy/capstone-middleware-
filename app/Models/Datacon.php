@@ -10,4 +10,7 @@ class Datacon extends Model
 
 
     use HasFactory;
+    protected $fillable = ['product_unit', 'sale'];
+    protected $guarded = ['_token'];
+    
 }

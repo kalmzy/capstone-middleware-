@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('datacons', function (Blueprint $table) {
+        Schema::create('product', function (Blueprint $table) {
+            $table->string('product_unit')->primary();
+            $table->integer('stock');
+            $table->integer('sold');
+            $table->integer('price');
+            $table->integer('revenue');
+        $table->timestamps();
             
-            $table->string('product_unit');
-            $table->foreign('product_unit')->references('product_unit')->on('product')->onUpdate('cascade')->onDelete('cascade');
-            $table->integer('sale');
-            $table->timestamps();
         });
     }
 
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('datacons');
+        Schema::dropIfExists('product');
     }
 };
