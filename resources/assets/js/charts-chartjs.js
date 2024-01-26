@@ -638,50 +638,62 @@
 
   const doughnutChart = document.getElementById('doughnutChart');
   if (doughnutChart) {
-    const doughnutChartVar = new Chart(doughnutChart, {
-      type: 'doughnut',
-      data: {
-        labels: ['Tablet', 'Mobile', 'Desktop'],
-        datasets: [
-          {
-            data: [10, 10, 80],
-            backgroundColor: [cyanColor, orangeLightColor, config.colors.primary],
-            borderWidth: 0,
-            pointStyle: 'rectRounded'
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        animation: {
-          duration: 500
-        },
-        cutout: '68%',
-        plugins: {
-          legend: {
-            display: false
-          },
-          tooltip: {
-            callbacks: {
-              label: function (context) {
-                const label = context.labels || '',
-                  value = context.parsed;
-                const output = ' ' + label + ' : ' + value + ' %';
-                return output;
+    // Fetch product_unit data from your backend (replace 'your_api_endpoint' with the actual endpoint)
+    const apiEndpoint = '{{ route(products.defectmetrics)}}';
+    fetch('apiEndpoint')
+      .then(response => response.json())
+      .then(data => {
+        const productUnits = data.map(item => item.product_unit);
+  
+        const doughnutChartVar = new Chart(doughnutChart, {
+          type: 'doughnut',
+          data: {
+            labels: productUnits,  // Use product_unit data as labels
+            datasets: [
+              {
+                data: [10, 10, 80],  // Replace with your actual data
+                backgroundColor: [cyanColor, orangeLightColor, config.colors.primary],
+                borderWidth: 0,
+                pointStyle: 'rectRounded'
               }
+            ]
+          },
+          options: {
+            responsive: true,
+            animation: {
+              duration: 500
             },
-            // Updated default tooltip UI
-            rtl: isRtl,
-            backgroundColor: cardColor,
-            titleColor: headingColor,
-            bodyColor: legendColor,
-            borderWidth: 1,
-            borderColor: borderColor
+            cutout: '60%',
+            plugins: {
+              legend: {
+                display: false
+              },
+              tooltip: {
+                callbacks: {
+                  label: function (context) {
+                    const label = context.labels || '',
+                      value = context.parsed;
+                    const output = ' ' + label + ' : ' + value + ' %';
+                    return output;
+                  }
+                },
+                rtl: isRtl,
+                backgroundColor: cardColor,
+                titleColor: headingColor,
+                bodyColor: legendColor,
+                borderWidth: 1,
+                borderColor: borderColor
+              }
+            }
+            // ... (rest of your options)
           }
-        }
-      }
-    });
+        });
+      })
+      .catch(error => {
+        console.error('Error fetching product_unit data:', error);
+      });
   }
+  
 
   // Scatter Chart
   // --------------------------------------------------------------------

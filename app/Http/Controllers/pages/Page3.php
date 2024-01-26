@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\pages;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Brick\Math\BigDecimal;
+use Brick\Math\RoundingMode;
 
 class Page3 extends Controller
 {

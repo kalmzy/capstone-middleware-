@@ -11,11 +11,18 @@ return new class extends Migration {
   public function up(): void
   {
     Schema::create('tasks', function (Blueprint $table) {
-      $table->id();
-      $table->string('title');
-      $table->text('description');
-      $table->date('date')->nullable();
-      $table->timestamps();
+    
+    $table->string('product_unit');
+    $table->foreign('product_unit')->references('product_unit')->on('product')->onUpdate('cascade')->onDelete('cascade');
+    $table->timestamps();
+    $table->string('location_part_id');
+    $table->text('description');
+    $table->enum('severity_level', ['Critical', 'Major', 'Minor']);
+    $table->text('root_cause_analysis')->nullable();
+    $table->text('corrective_action_taken');
+    $table->boolean('verification_of_correction');
+    $table->enum('status', ['Open', 'Resolved', 'Closed']);
+    $table->text('notes_comments')->nullable();
     });
   }
 

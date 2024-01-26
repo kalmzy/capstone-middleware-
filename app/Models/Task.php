@@ -12,7 +12,17 @@ class Task extends Model
   use HasFactory;
 
   protected $guarded = ['_token'];
-  protected $dates = ['date'];
+  protected $fillable = [
+    'product_unit',
+    'location_part_id',
+    'description',
+    'severity_level',
+    'root_cause_analysis',
+    'corrective_action_taken',
+    'verification_of_correction',
+    'status',
+    'notes_comments',
+];
 
 
   // rest of your model code...

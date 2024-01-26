@@ -23,7 +23,7 @@ $configData = Helper::appClasses();
 <script src="../../assets/js/main.js"></script>
 <script src="../../assets/js/cards-statistics.js"></script>
 @endsection
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 @section('title', 'Demand Forecasting')
 
 @section('content')
@@ -102,6 +102,64 @@ $configData = Helper::appClasses();
   </div>
 </div>
 
+<h1>Predict Next Month Sale Chart</h1>
 
+<canvas id="salesChart" height="100"></canvas>
+
+<script>
+    var ctx = document.getElementById('salesChart').getContext('2d');
+    var xValues = {!! json_encode($xValues) !!};
+    var sales = {!! json_encode($sales) !!};
+    var regressionLine = {!! json_encode($regressionLine) !!};
+    var salesPredictionOnly = {!! json_encode($salesPredictionOnly) !!};
+
+    var salesChart = new Chart(ctx, {
+        type: 'scatter',
+        data: {
+            datasets: [{
+                    label: 'Actual Sales',
+                    data: xValues.map((value, index) => ({
+                        x: value,
+                        y: sales[index]
+                    })),
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    pointRadius: 5,
+                },
+                {
+                    label: 'Regression Line',
+                    data: regressionLine,
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    fill: false,
+                    showLine: true,
+                },
+                {
+                    label: 'Predicted Sale',
+                    data: [{
+                        x: xValues[xValues.length - 1],
+                        y: salesPredictionOnly[0]
+                    }],
+                    borderColor: 'rgba(255, 206, 86, 1)',
+                    backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                    pointRadius: 8,
+                    pointHoverRadius: 10,
+                }
+            ]
+        },
+        options: {
+            scales: {
+                x: {
+                    type: 'linear',
+                    position: 'bottom'
+                },
+                y: {
+                    type: 'linear',
+                    position: 'left'
+                }
+            }
+        }
+    });
+</script>
 
 @endsection

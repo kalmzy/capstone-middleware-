@@ -6,23 +6,37 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class TaskController extends Controller
 {
+
   public function index()
   {
-    $tasks = Task::all();
-    return view('tasks.index', compact('tasks'));
+    $Minor = Task::where('severity_level','Minor')->count();
+    $Major = Task::where('severity_level','Major')->count();
+    $Critical = Task::where('severity_level','Minor')->count();
+    $tasks = Task::paginate(5);
+    
+    return view('tasks.index', compact('tasks','Minor','Major','Critical'));
   }
 
   public function create()
   {
     return view('tasks.create');
+    
   }
 
   public function store(Request $request)
   {
+    
+    $request->validate([
+      'product_unit' => ['required', Rule::exists('product', 'product_unit')],
+    ]);
+
     Task::create($request->all());
+    
+    session()->flash('success', 'Record created successfully');
     return redirect()->route('tasks.index');
   }
 
