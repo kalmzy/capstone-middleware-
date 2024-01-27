@@ -102,60 +102,72 @@ $configData = Helper::appClasses();
   </div>
 </div>
 
-<h1>Predict Next Month Sale Chart</h1>
+<h1>Linear Regression Result</h1>
+<p>Slope: {{ $slope }}</p>
+<p>Intercept: {{ $intercept }}</p>
 
-<canvas id="salesChart" height="100"></canvas>
+<canvas id="Scat" height="100"></canvas>
 
 <script>
-    var ctx = document.getElementById('salesChart').getContext('2d');
+    var ctx = document.getElementById('Scat').getContext('2d');
     var xValues = {!! json_encode($xValues) !!};
-    var sales = {!! json_encode($sales) !!};
+    var yValues = {!! json_encode($yValues) !!};
     var regressionLine = {!! json_encode($regressionLine) !!};
-    var salesPredictionOnly = {!! json_encode($salesPredictionOnly) !!};
 
-    var salesChart = new Chart(ctx, {
+    // Array of month names
+    var monthNames = [
+        'January', 'February', 'March', 'April', 'May', 'June', 
+        'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+
+    var currentYear = 2023;
+
+    var labels = xValues.map((month, index) => {
+        var monthIndex = (month - 1 + 12) % 12;
+
+        if (monthIndex === 0) {
+            currentYear++; 
+        }
+
+        return monthNames[monthIndex] + ' ' + currentYear;
+    });
+
+    var scatterChart = new Chart(ctx, {
         type: 'scatter',
         data: {
+            labels: labels, // Use month and year as labels
             datasets: [{
-                    label: 'Actual Sales',
-                    data: xValues.map((value, index) => ({
-                        x: value,
-                        y: sales[index]
-                    })),
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    pointRadius: 5,
-                },
-                {
-                    label: 'Regression Line',
-                    data: regressionLine,
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    fill: false,
-                    showLine: true,
-                },
-                {
-                    label: 'Predicted Sale',
-                    data: [{
-                        x: xValues[xValues.length - 1],
-                        y: salesPredictionOnly[0]
-                    }],
-                    borderColor: 'rgba(255, 206, 86, 1)',
-                    backgroundColor: 'rgba(255, 206, 86, 0.2)',
-                    pointRadius: 8,
-                    pointHoverRadius: 10,
-                }
-            ]
+                label: 'Scatter Plot',
+                data: xValues.map((value, index) => ({ x: value, y: yValues[index] })),
+                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                pointRadius: 5,
+            }, {
+                label: 'Regression Line',
+                data: regressionLine,
+                borderColor: 'rgba(255, 99, 132, 1)',
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                fill: false,
+                showLine: true,
+            }]
         },
         options: {
             scales: {
                 x: {
-                    type: 'linear',
-                    position: 'bottom'
+                    type: 'category', // Use 'category' for non-numeric labels
+                    position: 'bottom',
+                    title: {
+                        display: true,
+                        text: 'Months and Years' // Label for x-axis
+                    }
                 },
                 y: {
                     type: 'linear',
-                    position: 'left'
+                    position: 'left',
+                    title: {
+                        display: true,
+                        text: 'Amount' // Label for y-axis
+                    }
                 }
             }
         }

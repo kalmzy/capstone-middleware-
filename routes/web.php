@@ -9,7 +9,7 @@ use App\Http\Controllers\authentications\LoginBasic;
 use App\Http\Controllers\authentications\RegisterBasic;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\DataController;
-use App\Http\Controllers\RegressionController;
+
 
 
 
@@ -42,5 +42,5 @@ Route::get('/auth/register-basic', [RegisterBasic::class, 'index'])->name('auth-
 
 Route::resource('tasks', TaskController::class);
 Route::resource('dataCon', DataController::class);
-Route::resource('regression', RegressionController::class);
+
 

@@ -6,59 +6,79 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Brick\Math\BigDecimal;
 use Brick\Math\RoundingMode;
+use App\Models\Regression;
 
 class Page2 extends Controller
 {
   public function index()
   {
-    $months = [1, 2, 3, 4, 5];
-    $sales = [100, 120, 130, 150, 180];
 
-    // Convert sample data to BigDecimal objects
-    $months = array_map(fn($value) => BigDecimal::of($value), $months);
-    $sales = array_map(fn($value) => BigDecimal::of($value), $sales);
 
-    // Assuming $currentMonth is the current month's x-value
-    $currentMonth = BigDecimal::of(6); // Change this to the actual current month's value
+        
+        // Fetch data from database
+        $sales = Regression::all();
 
-    // Calculate the mean of x and y
-    $meanMonth = BigDecimal::of(0);
-    $meanSale = BigDecimal::of(0);
+$xValues = $sales->pluck('month');  
+$yValues = $sales->pluck('amount');
 
-    // Calculate the slope (m) and y-intercept (b)
-    $numerator = BigDecimal::of(0);
-    $denominator = BigDecimal::of(0);
+        // Convert sample data to BigDecimal objects
+        $xValues = $xValues->toArray();
+        $yValues = $yValues->toArray();
+        
+        $xValues = array_map(fn($value) => BigDecimal::of($value), $xValues);
+        $yValues = array_map(fn($value) => BigDecimal::of($value), $yValues);
+        // Calculate the mean of x and y
+        $meanX = BigDecimal::of(0);
+        $meanY = BigDecimal::of(0);
 
-    foreach ($months as $key => $month) {
-        if ($month->compareTo($currentMonth) === 0) {
-            continue; // Skip the predicting month's data for linear regression
+        foreach ($xValues as $x) {
+            $meanX = $meanX->plus($x);
         }
-        $numerator = $numerator->plus($month->minus($meanMonth)->multipliedBy($sales[$key]->minus($meanSale)));
-        $denominator = $denominator->plus($month->minus($meanMonth)->multipliedBy($month->minus($meanMonth)));
+
+        $meanX = $meanX->dividedBy(count($xValues), 10, RoundingMode::HALF_UP);
+
+        foreach ($yValues as $y) {
+            $meanY = $meanY->plus($y);
+        }
+
+        $meanY = $meanY->dividedBy(count($yValues), 10, RoundingMode::HALF_UP);
+
+        // Calculate the slope (m)
+        $numerator = BigDecimal::of(0);
+        $denominator = BigDecimal::of(0);
+
+        foreach ($xValues as $key => $x) {
+            $numerator = $numerator->plus($x->minus($meanX)->multipliedBy($yValues[$key]->minus($meanY)));
+            $denominator = $denominator->plus($x->minus($meanX)->multipliedBy($x->minus($meanX)));
+        }
+
+        $slope = $numerator->dividedBy($denominator, 10, RoundingMode::HALF_UP);
+
+        // Calculate the y-intercept (b)
+        $intercept = $meanY->minus($slope->multipliedBy($meanX));
+
+        // Prepare data for the chart
+        $xValues = array_map(fn($value) => $value->toFloat(), $xValues); // Convert BigDecimal to float
+        $regressionLine = [];
+
+        foreach ($xValues as $x) {
+            $regressionLine[] = ['x' => $x, 'y' => $slope->toFloat() * $x + $intercept->toFloat()];
+        }
+
+        // Add the next month to the xValues array
+        $nextMonthX = BigDecimal::of(max($xValues))->plus(1)->toFloat();
+        $xValues[] = $nextMonthX;
+
+        // Use the regression equation to predict sales for the next month
+        $predictedNextMonthSales = $slope->toFloat() * $nextMonthX + $intercept->toFloat();
+        
+        // Output the linear regression equation
+        $equation = "Linear Regression Equation: y = {$slope}x + {$intercept}";
+
+        // Return the equation and chart data to be displayed in the view
+        return view('content.pages.pages-page2', compact('equation', 'slope', 'intercept', 'xValues', 'yValues', 'regressionLine', 'predictedNextMonthSales'));
     }
 
-    $slope = $numerator->dividedBy($denominator, 10, RoundingMode::HALF_UP);
-    $intercept = $meanSale->minus($slope->multipliedBy($meanMonth));
+  
 
-    // Predict the next month's sale
-    $predictedSale = $slope->toFloat() * $currentMonth->toFloat() + $intercept->toFloat();
-
-    // Prepare data for the chart
-    $xValues = array_map(fn($value) => $value->toFloat(), $months); // Convert BigDecimal to float
-    $regressionLine = [];
-    foreach ($xValues as $x) {
-        if ($x === $currentMonth->toFloat()) {
-            continue; // Skip the predicting month's x-value for regression line
-        }
-        $regressionLine[] = ['x' => $x, 'y' => $slope->toFloat() * $x + $intercept->toFloat()];
-    }
-
-    // Display only the predicted value for the next month
-    $xValues[] = $currentMonth->toFloat();
-    $sales[] = null; // Set the actual value for the predicting month as null
-    $salesPredictionOnly = [$predictedSale];
-
-    return view('content.pages.pages-page2', compact('xValues', 'sales', 'regressionLine', 'salesPredictionOnly'));
-
-  }
 }

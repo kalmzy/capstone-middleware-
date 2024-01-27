@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('regressions', function (Blueprint $table) {
             $table->id();
+            $table->integer('month');
+      $table->integer('amount');
             $table->timestamps();
         });
     }
