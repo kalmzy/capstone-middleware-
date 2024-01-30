@@ -39,6 +39,9 @@
     chartListItem.height = chartListItem.dataset.height;
   });
 
+
+  
+  
   // Line Chart
   // --------------------------------------------------------------------
 

@@ -35,6 +35,7 @@ Route::get('lang/{locale}', [LanguageController::class, 'swap']);
 
 // pages
 
+
 // authentication
 Route::get('/auth/login-basic', [LoginBasic::class, 'index'])->name('auth-login-basic');
 Route::get('/auth/register-basic', [RegisterBasic::class, 'index'])->name('auth-register-basic');
@@ -42,5 +43,7 @@ Route::get('/auth/register-basic', [RegisterBasic::class, 'index'])->name('auth-
 
 Route::resource('tasks', TaskController::class);
 Route::resource('dataCon', DataController::class);
+
+Route::get('/api/sales', [Page2::class, 'fetchsale']);
 
 

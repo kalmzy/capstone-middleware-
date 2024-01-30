@@ -40,6 +40,8 @@
       series3: '#a5f8cd'
     }
   };
+  
+
 
   // Heat chart data generator
   function generateDataHeat(count, yrange) {

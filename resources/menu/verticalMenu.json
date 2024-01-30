@@ -3,34 +3,52 @@
     {
       "url": "/",
       "name": "Dashboard",
-      "icon": "menu-icon tf-icons ti ti-smart-home",
+      "icon": "menu-icon tf-icons ti ti-layout-dashboard",
       "slug": "pages-home"
     },
     {
       "url": "page-2",
-      "icon": "menu-icon tf-icons ti ti-file",
+      "icon": "menu-icon tf-icons ti ti-chart-area-line-filled",
       "name": "Demand Forecasting",
-      "slug": "pages-page-2"
+      "slug": "pages-page-2",
+      "submenu": [
+        {
+          "url": "page-2",
+          "name": "Analytics",
+          "icon":"menu-icon tf-icons ti ti-analyze",
+          "slug": "pages-page-2"
+        },
+        {
+          "url": "dataCon",
+          "name": "Data Connection",
+          "icon":"menu-icon tf-icons ti ti-database",
+          "slug": "pages-data-connection"
+        },
+        {
+          "url": "dataCon",
+          "name": "Reports",
+          "icon":"menu-icon tf-icons ti ti-report",
+          "slug": "pages-data-connection"
+        }
+      ]
     },
     {
       "url": "page-3",
-      "icon": "menu-icon tf-icons ti ti-file",
+      "icon": "menu-icon tf-icons ti ti-device-desktop-analytics",
       "name": "Quality Control",
-      "slug": "pages-page-3"
-    },
-    {
-      "url": "auth/login-basic",
-      "name": "Login",
-      "icon": "menu-icon tf-icons ti ti-login",
-      "slug": "auth-login-basic",
-      "target": "_blank"
-    },
-    {
-      "url": "auth/register-basic",
-      "name": "Register",
-      "icon": "menu-icon tf-icons ti ti-user",
-      "slug": "auth-register-basic",
-      "target": "_blank"
+      "slug": "pages-page-3",
+      "submenu": [
+        {
+          "url": "page-3",
+          "name": "Quality Analysis",
+          "slug": "pages-page-3"
+        },
+        {
+          "url": "tasks",
+          "name": "Quality Report",
+          "slug": "pages-testpage"
+        }
+      ]
     }
   ]
 }

@@ -14,12 +14,20 @@
       "submenu": [
         {
           "url": "page-2",
-          "name": "Data Statistic",
+          "name": "Analytics",
+          "icon":"menu-icon tf-icons ti ti-analyze",
           "slug": "pages-page-2"
         },
         {
           "url": "dataCon",
           "name": "Data Connection",
+          "icon":"menu-icon tf-icons ti ti-database",
+          "slug": "pages-data-connection"
+        },
+        {
+          "url": "dataCon",
+          "name": "Reports",
+          "icon":"menu-icon tf-icons ti ti-report",
           "slug": "pages-data-connection"
         }
       ]

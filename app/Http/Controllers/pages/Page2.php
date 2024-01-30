@@ -14,7 +14,13 @@ class Page2 extends Controller
   {
 
 
-        
+        // Return the equation and chart data to be displayed in the view
+        return view('content.pages.pages-page2');
+    }
+
+    public function fetchsale()
+    {
+                
         // Fetch data from database
         $sales = Regression::all();
 
@@ -72,13 +78,13 @@ $yValues = $sales->pluck('amount');
         // Use the regression equation to predict sales for the next month
         $predictedNextMonthSales = $slope->toFloat() * $nextMonthX + $intercept->toFloat();
         
-        // Output the linear regression equation
-        $equation = "Linear Regression Equation: y = {$slope}x + {$intercept}";
 
-        // Return the equation and chart data to be displayed in the view
-        return view('content.pages.pages-page2', compact('equation', 'slope', 'intercept', 'xValues', 'yValues', 'regressionLine', 'predictedNextMonthSales'));
+
+        return response()->json([ 
+        'xValues' => $xValues,
+        'yValues' => $yValues,
+        'regressionLine' => $regressionLine,
+        'predictedNextMonthSales' => $predictedNextMonthSales]);
     }
-
-  
 
 }
