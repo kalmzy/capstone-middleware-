@@ -10,9 +10,11 @@ return new class extends Migration {
    */
   public function up(): void
   {
-    Schema::create('regressions', function (Blueprint $table) {
+    Schema::create('sales', function (Blueprint $table) {
       $table->id();
-      $table->integer('amount');
+      $table->foreignId('product_id')->constrained();
+      $table->integer('quantity_sold');
+      $table->decimal('total_sale', 10, 2);
       $table->timestamps();
     });
   }
@@ -22,6 +24,6 @@ return new class extends Migration {
    */
   public function down(): void
   {
-    Schema::dropIfExists('regressions');
+    Schema::dropIfExists('sales');
   }
 };

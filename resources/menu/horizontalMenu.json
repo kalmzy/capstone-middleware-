@@ -19,13 +19,13 @@
           "slug": "pages-page-2"
         },
         {
-          "url": "dataCon",
+          "url": "admin/products/filter",
           "name": "Data Connection",
           "icon":"menu-icon tf-icons ti ti-database",
           "slug": "pages-data-connection"
         },
         {
-          "url": "dataCon",
+          "url": "admin/report",
           "name": "Reports",
           "icon":"menu-icon tf-icons ti ti-report",
           "slug": "pages-data-connection"

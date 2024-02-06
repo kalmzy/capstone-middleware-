@@ -2,106 +2,101 @@
 
 @section('title', 'Data Connection')
 @section('content')
-
-  
-<div class="container">
-
-  <div class="row">
-    <div class="col-md-6">
-      <a href="{{ route('dataCon.create') }}" class="btn btn-primary mb-2">Create New Task</a>
+<div class="row mb-4 mx-auto justify-content-center">
+    <div class="col-md-3">
+        <div class="form-group">
+            <form method="get" action="{{ route('products.filter') }}">
+                <div class="input-group">
+                    <label for="category" class="visually-hidden">Select category:</label>
+                    <select class="form-select" id="category" name="category" onchange="this.form.submit()">
+                        <option value="0">Select category</option>
+                        @foreach($categories as $category)
+                            <option value="{{ $category->id }}" {{ $categoryId == $category->id ? 'selected' : '' }}>{{ $category->category_name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </form>
+        </div>
     </div>
 
     <div class="col-md-3">
-      <div class="form-group">
-
-        <form method="get" action="dataCon">
-          <div class="input-group">
-              <select class="form-select" name="product_filter">
-                  <option value="">Products</option>
-                  @foreach($distinctProduct as $product)
-                      <option value="{{ $product }}" {{ $product == $ProductFilter ? 'selected' : '' }}>
-                          {{ ucfirst($product) }}
-                      </option>
-                  @endforeach
-      
-              </select>
-              <button type="submit" class="btn btn-primary">Filter</button>
-          </div>
-      </form>
-          
-
-      </div>
-  </div>
-  
-      <div class="col-md-4">
-          <div class="table-responsive mb-4">
-              <table class="table table-bordered">
-                       <thead class="table-dark">
-        <tr>
-          <th class="Hcol">Unit</th>
-          <th>Sale</th>
-          <th>Date</th>
-        </tr>
-      </thead>
-      <tbody>
-        @foreach($dataCon as $dc)
-        <tr>
-          <td class="text-primary">{{$dc->product_unit}}</td>
-          <td class="">{{$dc->sale}}</td>
-          <td class="text-info">{{$dc->created_at->format('y-m-d')}}</td>
-        </tr>
-        @endforeach
-      </tbody>
-              </table>
-              <div class="col-1">
-                  {{ $dataCon->links('pagination::Bootstrap-4') }}
-              </div>
-          </div>
-      </div>
-
-      
-      <div class="col-md-8">
-        <div class="table-responsive">
-            <table class="table table-bordered table-hover">
-                <thead>
-                    <tr>
-                        <th>Product Data</th>
-                        @foreach(range(1, 12) as $month)
-                        <th>{{ date('F', mktime(0, 0, 0, $month, 1)) }}</th>
+        <div class="form-group">
+            <form method="get" action="{{ route('products.filter') }}">
+                <div class="input-group">
+                    <label for="product" class="visually-hidden">Select product:</label>
+                    <select class="form-select" id="product" name="product" onchange="this.form.submit()">
+                        <option value="0">Select product</option>
+                        @foreach($products as $product)
+                            <option value="{{ $product->id }}" {{ $selectedProductId == $product->id ? 'selected' : '' }}>{{ $product->product_name }}</option>
                         @endforeach
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Unit in Stock</td>
-                        @foreach($dataWithMissingMonths as $data)
-                        <td>{{ $data->totals }}</td>
-                        @endforeach
-                    </tr>
-                    <tr>
-                        <td>Price per Unit</td>
-                        @foreach($dataWithMissingMonths as $data)
-                        <td>${{ $data->totalp }}</td>
-                        @endforeach
-                    </tr>
-                    <tr>
-                        <td>Sold Unit</td>
-                        @foreach($dataWithMissingMonths as $data)
-                        <td>{{ $data->totalso }}</td>
-                        @endforeach
-                    </tr>
-                    <tr>
-                        <td>Revenue</td>
-                        @foreach($dataWithMissingMonths as $data)
-                        <td>${{ $data->totala }}</td>
-                        @endforeach
-                    </tr>
-                </tbody>
-            </table>
+                    </select>
+                </div>
+            </form>
         </div>
     </div>
-    
+</div>
 
 
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="table-responsive mb-4">
+                <table class="table table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th class="Hcol">Product</th>
+                            <th>Price</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if($selectedProduct)
+                        <tr>
+                            <td>{{ $selectedProduct->product_name }}</td>
+                            <td>{{ $selectedProduct->price }}</td>
+                            <td>{{ $selectedProduct->created_at }}</td>
+                          
+                        </tr>
+                    @endif
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Product Data</th>
+                            @foreach(range(1, 12) as $month)
+                                <th>{{ date('F', mktime(0, 0, 0, $month, 1)) }}</th>
+                            @endforeach
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Unit in Stock</td>
+                            <!-- Add cells for the filtered product data -->
+                        </tr>
+                        <tr>
+                            <td>Price per Unit</td>
+                            <!-- Add cells for the filtered product data -->
+                        </tr>
+                        <tr>
+                            <td>Sold Unit</td>
+                            <!-- Add cells for the filtered product data -->
+                        </tr>
+                        <tr>
+                            <td>Revenue</td>
+                            <!-- Add cells for the filtered product data -->
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
 @endsection

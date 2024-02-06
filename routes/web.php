@@ -9,10 +9,7 @@ use App\Http\Controllers\authentications\LoginBasic;
 use App\Http\Controllers\authentications\RegisterBasic;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\DataController;
-
-
-
-
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,15 +32,27 @@ Route::get('lang/{locale}', [LanguageController::class, 'swap']);
 
 // pages
 
-
 // authentication
 Route::get('/auth/login-basic', [LoginBasic::class, 'index'])->name('auth-login-basic');
 Route::get('/auth/register-basic', [RegisterBasic::class, 'index'])->name('auth-register-basic');
 // routes/web.php
 
 Route::resource('tasks', TaskController::class);
-Route::resource('dataCon', DataController::class);
 
 Route::get('/api/sales', [Page2::class, 'fetchsale']);
 
+Route::prefix('admin')->group(function () {
+  Route::controller(DataController::class)->group(function () {
+    Route::get('products/filter', 'index')->name('products.filter');
+  });
 
+  Route::controller(ReportController::class)->group(function () {
+    Route::get('report', 'index');
+    Route::get('report/create/category', 'create');
+    Route::get('report/create/product', 'createProduct');
+    Route::get('report/create/sale', 'createSale');
+    Route::post('report', 'store');
+    Route::post('report/product', 'storeProduct');
+    Route::post('report/sale', 'storeSale');
+  });
+});

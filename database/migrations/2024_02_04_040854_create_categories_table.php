@@ -10,9 +10,9 @@ return new class extends Migration {
    */
   public function up(): void
   {
-    Schema::create('regressions', function (Blueprint $table) {
+    Schema::create('categories', function (Blueprint $table) {
       $table->id();
-      $table->integer('amount');
+      $table->string('category_name');
       $table->timestamps();
     });
   }
@@ -22,6 +22,6 @@ return new class extends Migration {
    */
   public function down(): void
   {
-    Schema::dropIfExists('regressions');
+    Schema::dropIfExists('categories');
   }
 };
