@@ -77,20 +77,16 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Unit in Stock</td>
-                            <!-- Add cells for the filtered product data -->
-                        </tr>
-                        <tr>
-                            <td>Price per Unit</td>
-                            <!-- Add cells for the filtered product data -->
-                        </tr>
-                        <tr>
                             <td>Sold Unit</td>
-                            <!-- Add cells for the filtered product data -->
+                            @foreach ($dataWithMissingMonths as $item)
+                                <td>{{ isset($item->total_quantity_sold) ? $item->total_quantity_sold : 0 }}</td>
+                            @endforeach
                         </tr>
                         <tr>
                             <td>Revenue</td>
-                            <!-- Add cells for the filtered product data -->
+                            @foreach ($dataWithMissingMonths as $item)
+                                <td>{{ isset($item->total_amount_sale) ? $item->total_amount_sale : 0 }}</td>
+                            @endforeach
                         </tr>
                     </tbody>
                 </table>
