@@ -27,7 +27,7 @@ $configData = Helper::appClasses();
 @endsection
 @section('content')
 
-
+<div class="container">
       <!-- Profit last month -->
       <div class="row">
       <div class="col-6 mb-4">
@@ -63,22 +63,123 @@ $configData = Helper::appClasses();
       </div>
       </div>
  
-  <!-- Yearly Predictive Statistics -->
-  <div class="col-9 ">
-    <div class="card">
-      <div class="card-header d-flex align-items-center justify-content-between">
-        <div class="card-title mb-0">
-          <h5 class="m-0 me-2">Yearly Predictive Statistics</h5>
-          <small class="text-muted">Product Sales</small>
+
+ 
+    <div class="row">
+      <div class="col-md-9">
+        <!-- Bar chart -->
+        <div class="card">
+          <div class="card-header d-flex align-items-center justify-content-between">
+            <div class="card-title mb-0">
+              <h5 class="m-0 me-2">Product Defects Statistics</h5>
+              <small class="text-muted">Total Defects</small>
+            </div>
+            <div class="dropdown">
+              <button type="button" class="btn btn-label-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">January</button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="javascript:void(0);">Months</a></li>
+                <li><a class="dropdown-item" href="javascript:void(0);">Years</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="card-body">
+            <div id="shipmentStatisticsChart"></div>
+          </div>
         </div>
       </div>
-      <div class="card-body">
-        <div id="shipmentStatisticsChart"></div>
+    
+      <div class="col-md-3">
+        <!-- Donut chart -->
+        <div class="card">
+          <div class="card-header">
+            <h5 class="m-0 me-2">Defects Rates</h5>
+          </div>
+          <div class="card-body">
+            <div id="donutChart" class="pt-md-4" style="width: 100%; height: 400px;"></div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-
-
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+        <script>
+          document.addEventListener("DOMContentLoaded", function(event) {
+            var defectCounts = {!! json_encode($defectCountByCategory) !!};
+        
+            var options = {
+              chart: {
+                type: 'donut',
+                height: 500,
+              },
+              labels: ['Dimension', 'Packaging', 'Surface', 'Material', 'Functional', 'Assembly', 'Aesthetic', 'Labeling'],
+              series: [defectCounts.dimension, defectCounts.packaging, defectCounts.surface, defectCounts.material, defectCounts.functional, defectCounts.assembly, defectCounts.aesthetic, defectCounts.labeling],
+              colors: [
+                '#008FFB',
+                '#00E396',
+                '#FEB019',
+                '#FF4560',
+                '#775DD0',
+                '#3F51B5',
+                '#546E7A',
+                '#D7263D'
+                // Add more colors as needed
+              ],
+              dataLabels: {
+                enabled: true,
+                formatter: function (val, opt) {
+                  return parseInt(val, 10) + '%';
+                }
+              },
+              legend: {
+                show: true,
+                position: 'bottom',
+                markers: { offsetX: -3 },
+                itemMargin: {
+                  vertical: 3,
+                  horizontal: 10
+                },
+                
+                labels: {
+                  colors: '#777',
+                }
+              },
+              plotOptions: {
+                pie: {
+                  donut: {
+                    labels: {
+                      show: true,
+                      name: {
+                        fontSize: '2rem',
+                        fontFamily: 'Public Sans'
+                      },
+                      value: {
+                        fontSize: '1.2rem',
+                        color: '#777',
+                        fontFamily: 'Public Sans',
+                        formatter: function (val) {
+                          return parseInt(val, 10) + '%';
+                        }
+                      },
+                      total: {
+                        show: true,
+                        fontSize: '1.5rem',
+                        color: '#333',
+                        label: '',
+                        formatter: function () {
+                          var total = defectCounts.dimension + defectCounts.packaging + defectCounts.surface + defectCounts.material + defectCounts.functional + defectCounts.assembly + defectCounts.aesthetic + defectCounts.labeling;
+                          return ((defectCounts.dimension / total) * 100).toFixed(2) + '%';
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            };
+        
+            var chart = new ApexCharts(document.querySelector("#donutChart"), options);
+            chart.render();
+          });
+        </script>
+</div>        
 @endsection
 
 @section('scripts')

@@ -21,4 +21,8 @@ class Product extends Model
   {
     return $this->hasMany(Sale::class, 'product_id', 'id');
   }
+  public function defects()
+  {
+    return $this->hasMany(Defect::class);
+  }
 }

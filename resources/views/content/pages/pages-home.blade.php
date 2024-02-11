@@ -18,6 +18,7 @@ $configData = Helper::appClasses();
 @endsection
 
 @section('page-script')
+<script src="{{ asset('assets/js/df-regression.js') }}"></script>
 <script src="{{asset('assets/js/app-logistics-dashboard.js')}}"></script>
 <script src="{{asset('assets/js/charts-chartjs.js')}}"></script>
 <script src="{{asset('assets/js/cards-analytics.js')}}"></script>
@@ -194,28 +195,14 @@ $configData = Helper::appClasses();
   </div>
 
   <!-- Reasons for delivery exceptions -->
-  <div class="col-lg-6">
-    <div class="card h-100">
-      <div class="card-header d-flex align-items-center justify-content-between">
-        <div class="card-title mb-0">
-          <h5 class="m-0 me-2">Reasons for delivery exceptions</h5>
-        </div>
-        <div class="dropdown">
-          <button class="btn p-0" type="button" id="deliveryExceptions" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="ti ti-dots-vertical"></i>
-          </button>
-          <div class="dropdown-menu dropdown-menu-end" aria-labelledby="deliveryExceptions">
-            <a class="dropdown-item" href="javascript:void(0);">Select All</a>
-            <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
-            <a class="dropdown-item" href="javascript:void(0);">Share</a>
-          </div>
-        </div>
-      </div>
-      <div class="card-body">
-        <div id="deliveryExceptionsChart" class="pt-md-4"></div>
-      </div>
+  <div class="card col-lg-6 mb-4">
+    <div class="card-header header-elements">
+    </div>
+    <div class="card-body pt-2">
+        <canvas id="Scat" height="400"></canvas>
     </div>
   </div>
   <!--/ Reasons for delivery exceptions -->
 </div>
+
 @endsection

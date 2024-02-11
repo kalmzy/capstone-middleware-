@@ -6,54 +6,66 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use Illuminate\Http\Request;
+use App\Models\Defect;
+use App\Models\Product;
 use Illuminate\Validation\Rule;
 
 class TaskController extends Controller
 {
-
   public function index()
   {
-    $Minor = Task::where('severity_level','Minor')->count();
-    $Major = Task::where('severity_level','Major')->count();
-    $Critical = Task::where('severity_level','Minor')->count();
-    $tasks = Task::paginate(5);
-    
-    return view('tasks.index', compact('tasks','Minor','Major','Critical'));
+    $Low = Defect::where('severity', 'Low')->count();
+    $Medium = Defect::where('severity', 'Medium')->count();
+    $Critical = Defect::where('severity', 'Critical')->count();
+    $defects = Defect::paginate(8);
+
+    $defectCountByCategory = $this->getDefectCountByCategory();
+    return view('tasks.index', compact('defects', 'Low', 'Medium', 'Critical', 'defectCountByCategory'));
   }
 
   public function create()
   {
-    return view('tasks.create');
-    
+    $products = Product::all();
+    return view('tasks.create', compact('products'));
   }
 
   public function store(Request $request)
   {
-    
-    $request->validate([
-      'product_unit' => ['required', Rule::exists('product', 'product_unit')],
+    $validatedData = $request->validate([
+      'product_id' => 'required|integer|exists:products,id',
+      'name' => 'required|in:Dimensional,Surface,Material,Functional,Assembly,Aesthetic,Packaging,Labeling',
+      'description' => 'required',
+      'status' => 'required|in:Open,Resolved,Closed',
+      'severity' => 'required|in:Low,Medium,Critical',
+      'assigned_to' => 'required',
+      'reported_by' => 'required',
     ]);
+    Defect::create($validatedData);
 
-    Task::create($request->all());
-    
     session()->flash('success', 'Record created successfully');
     return redirect()->route('tasks.index');
   }
 
-  public function edit(Task $task)
+  public function getDefectCountByCategory()
   {
-    return view('tasks.edit', compact('task'));
-  }
+    $dimensionDefects = Defect::where('name', 'Dimensional')->count();
+    $packagingDefects = Defect::where('name', 'Packaging')->count();
+    $surfaceDefects = Defect::where('name', 'Surface')->count();
+    $materialDefects = Defect::where('name', 'Material')->count();
+    $functionalDefects = Defect::where('name', 'Functional')->count();
+    $assemblyDefects = Defect::where('name', 'Assembly')->count();
+    $aestheticDefects = Defect::where('name', 'Aesthetic')->count();
+    $labelingDefects = Defect::where('name', 'Labeling')->count();
 
-  public function update(Request $request, Task $task)
-  {
-    $task->update($request->all());
-    return redirect()->route('tasks.index');
-  }
-
-  public function destroy(Task $task)
-  {
-    $task->delete();
-    return redirect()->route('tasks.index');
+    return [
+      'dimension' => $dimensionDefects,
+      'packaging' => $packagingDefects,
+      'surface' => $surfaceDefects,
+      'material' => $materialDefects,
+      'functional' => $functionalDefects,
+      'assembly' => $assemblyDefects,
+      'aesthetic' => $aestheticDefects,
+      'labeling' => $labelingDefects,
+    ];
   }
 }

@@ -76,6 +76,19 @@
                         </tr>
                     </thead>
                     <tbody>
+
+                        <tr>
+                            <td>price</td>
+                            @foreach ($dataWithMissingMonths as $item)
+                            @if ($item->total_quantity_sold > 0 || $loop->first)
+                              <td>{{ $selectedProduct ? $selectedProduct->price : 0 }}</td>
+                            @else
+                              <td></td>
+                            @endif
+                          @endforeach
+                          
+                        </tr>
+
                         <tr>
                             <td>Sold Unit</td>
                             @foreach ($dataWithMissingMonths as $item)

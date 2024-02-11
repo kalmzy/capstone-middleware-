@@ -14,64 +14,58 @@
                 <div class="card-body">
                     <form method="POST" action="{{ route('tasks.store') }}">
                         @csrf
-
+                        @csrf
                         <div class="form-group">
-                            <label for="product_unit">Product Unit:</label>
-                            <input type="text" class="form-control" id="product_unit" name="product_unit" required>
+                            <label for="product_id">Product:</label>
+                            <select name="product_id" id="product_id" class="form-control">
+                                @foreach($products as $product)
+                                    <option value="{{ $product->id }}">{{ $product->product_name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="form-group">
-                            <label for="location_part_id">Location :</label>
-                            <textarea class="form-control" id="location_part_id" name="location_part_id" rows="3"></textarea>
+                            <label for="name">defects type</label>
+                            <select class="form-control" id="name" name="name" required>
+                                <option value="Dimensional">Dimensional</option>
+                                <option value="Surface">Surface</option>
+                                <option value="Material">Material</option>
+                                <option value="Functional">Functional</option>
+                                <option value="Assembly">Assembly</option>
+                                <option value="Aesthetic">Aesthetic</option>
+                                <option value="Packaging">Packaging</option>
+                                <option value="Labeling">Labeling</option>
+                            </select>
                         </div>
-
+                    
                         <div class="form-group">
-                            <label for="description">Description:</label>
+                            <label for="description">Description</label>
                             <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
                         </div>
-
                         <div class="form-group">
-                            <label for="severity_level">Severity Level:</label>
-                            <select class="form-control" id="severity_level" name="severity_level" required>
-                                <option value="Critical">Critical</option>
-                                <option value="Major">Major</option>
-                                <option value="Minor">Minor</option>
-                            </select>
-                        </div>
-
-
-                        <div class="form-group">
-                            <label for="root_cause_analysis">Root Cause Analysis:</label>
-                            <textarea class="form-control" id="root_cause_analysis" name="root_cause_analysis" rows="3"></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="corrective_action_taken">Corrective Action Taken:</label>
-                            <textarea class="form-control" id="corrective_action_taken" name="corrective_action_taken" rows="3" required></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="verification_of_correction">Verification of Correction:</label>
-                            <select class="form-control" id="verification_of_correction" name="verification_of_correction" required>
-                                <option value="1">Yes</option>
-                                <option value="0">No</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="status">Status:</label>
+                            <label for="status">Status</label>
                             <select class="form-control" id="status" name="status" required>
                                 <option value="Open">Open</option>
                                 <option value="Resolved">Resolved</option>
                                 <option value="Closed">Closed</option>
                             </select>
                         </div>
-
                         <div class="form-group">
-                            <label for="notes_comments">Notes/Comments:</label>
-                            <textarea class="form-control" id="notes_comments" name="notes_comments" rows="3"></textarea>
+                            <label for="severity">Severity</label>
+                            <select class="form-control" id="severity" name="severity" required>
+                                <option value="Low">Low</option>
+                                <option value="Medium">Medium</option>
+                                <option value="Critical">Critical</option>
+                            </select>
                         </div>
-
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <div class="form-group">
+                            <label for="assigned_to">Assigned To</label>
+                            <textarea class="form-control" id="assigned_to" name="assigned_to" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="reported_by">Reported by</label>
+                            <textarea class="form-control" id="reported_by" name="reported_by" rows="3" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Create</button>
                         @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
