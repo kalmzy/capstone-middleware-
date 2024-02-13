@@ -7,12 +7,86 @@ use Illuminate\Http\Request;
 use Brick\Math\BigDecimal;
 use Brick\Math\RoundingMode;
 use App\Models\Regression;
+use App\Models\Defect;
+use DateTime;
+use Illuminate\Support\Facades\DB;
 
 class HomePage extends Controller
 {
   public function index()
   {
-    return view('content.pages.pages-home');
+    $defects = Defect::all();
+    $defectCountByCategory = $this->getDefectCountByCategory();
+    $defectCountByCategoryAndMonth = $this->getDefectCountByCategoryAndMonth();
+
+    return view(
+      'content.pages.pages-home',
+      compact('defects', 'defectCountByCategory', 'defectCountByCategoryAndMonth')
+    );
+  }
+
+  public function getDefectCountByCategory()
+  {
+    $dimensionDefects = Defect::where('name', 'Dimensional')->count();
+    $packagingDefects = Defect::where('name', 'Packaging')->count();
+    $surfaceDefects = Defect::where('name', 'Surface')->count();
+    $materialDefects = Defect::where('name', 'Material')->count();
+    $functionalDefects = Defect::where('name', 'Functional')->count();
+    $assemblyDefects = Defect::where('name', 'Assembly')->count();
+    $aestheticDefects = Defect::where('name', 'Aesthetic')->count();
+    $labelingDefects = Defect::where('name', 'Labeling')->count();
+
+    return [
+      'dimension' => $dimensionDefects,
+      'packaging' => $packagingDefects,
+      'surface' => $surfaceDefects,
+      'material' => $materialDefects,
+      'functional' => $functionalDefects,
+      'assembly' => $assemblyDefects,
+      'aesthetic' => $aestheticDefects,
+      'labeling' => $labelingDefects,
+    ];
+  }
+
+  public function getDefectCountByCategoryAndMonth()
+  {
+    $defects = Defect::select(
+      DB::raw('DATE_FORMAT(created_at, "%m-%Y") as month'),
+      'name',
+      DB::raw('COUNT(*) as total')
+    )
+      ->groupBy('month', 'name')
+      ->get();
+
+    $defectData = [];
+
+    // Initialize an array to hold all months within the desired range
+    $monthsInRange = [];
+
+    // Find the earliest and latest months in the dataset
+    $earliestMonth = new DateTime(Defect::min('created_at'));
+    $latestMonth = new DateTime(Defect::max('created_at'));
+
+    // Fill the array with months from the earliest to the latest in the dataset
+    $currentMonth = clone $earliestMonth;
+    while ($currentMonth <= $latestMonth) {
+      $monthsInRange[] = $currentMonth->format('m-Y');
+      $currentMonth->modify('+1 month');
+    }
+
+    // Initialize defect counts for each category for all months in range
+    foreach ($monthsInRange as $month) {
+      foreach ($defects as $defect) {
+        $defectData[$defect->name][$month] = 0;
+      }
+    }
+
+    // Update the counts with actual data
+    foreach ($defects as $defect) {
+      $defectData[$defect->name][$defect->month] = $defect->total;
+    }
+
+    return $defectData;
   }
   public function fetchsale()
   {

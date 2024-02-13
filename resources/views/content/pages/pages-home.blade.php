@@ -180,20 +180,24 @@ $configData = Helper::appClasses();
 
   <div class="row">
   <!-- Yearly Predictive Statistics -->
-  <div class="col-lg-6">
-    <div class="card h-100">
+  <div class="col-lg-6 mb-4">
+    <div class="card">
       <div class="card-header d-flex align-items-center justify-content-between">
-        <div class="card-title mb-0">
-          <h5 class="m-0 me-2">Yearly Predictive Statistics</h5>
-          <small class="text-muted">Product Sales</small>
+        <h5 class="card-title mb-0 pl-0 pl-sm-2 p-2">Latest Defect Statistics</h5>
+        <div class="card-action-element ms-auto py-0">
+          <div class="dropdown">
+            <button type="button" class="btn dropdown-toggle p-0" data-bs-toggle="dropdown" aria-expanded="false"><i class="ti ti-calendar"></i></button>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a href="javascript:void(0);" class="dropdown-item d-flex align-items-center">Monthly</a></li>
+              <li><a href="javascript:void(0);" class="dropdown-item d-flex align-items-center">Yearly</a></li>
+          </div>
         </div>
       </div>
       <div class="card-body">
-        <div id="shipmentStatisticsChart"></div>
+        <canvas id="defectChart"></canvas>
+      </div>
       </div>
     </div>
-  </div>
-
   <!-- Reasons for delivery exceptions -->
   <div class="card col-lg-6 mb-4">
     <div class="card-header header-elements">
@@ -205,4 +209,78 @@ $configData = Helper::appClasses();
   <!--/ Reasons for delivery exceptions -->
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+          //bar chart     
+          const fixedColors = ['#ff3333', '#00cc00', '#7367f0', '#cccc00', '#339999','#ff9f43','#ff8533','#3385ff'];
+
+var defectData = @json($defectCountByCategoryAndMonth);
+var ctx = document.getElementById('defectChart').getContext('2d');
+var chartHeight = 384; // Adjust this value according to your preference
+
+// Set the canvas height dynamically
+ctx.canvas.height = chartHeight;
+var defectChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: Object.keys(defectData[Object.keys(defectData)[0]])
+            .map(month => month.substring(5, 7) + '-' + month.substring(0, 4)),
+        datasets: Object.keys(defectData).map(function(key, index) {
+            return {
+                label: key,
+                data: Object.values(defectData[key]),
+                backgroundColor: fixedColors[index % fixedColors.length], // Use fixed colors from the array
+                borderColor: 'transparent',
+                borderWidth: 1,
+                borderRadius: {
+                    topRight: 15,
+                    topLeft: 15
+                }
+            };
+        })
+    },
+    options: {
+        responsive: true, // Make the chart responsive
+        maintainAspectRatio: false, // Allow the chart to not maintain aspect ratio
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    callback: function(value) {
+                        if (value % 1 === 0) {
+                            return value;
+                        }
+                    }
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                show: true,
+                position: 'bottom',
+                offsetY: 10,
+                markers: {
+                    width: 8,
+                    height: 8,
+                    offsetX: -3
+                },
+                itemMargin: {
+                    horizontal: 15,
+                    vertical: 5
+                },
+                fontSize: '13px',
+                fontFamily: 'Public Sans',
+                fontWeight: 400,
+                labels: {
+                    colors: '#c4c9e2',
+                    useSeriesColors: false,
+                    boxWidth: 12, // Adjust the size as needed
+                    usePointStyle: true, // Use point style for legend color boxes
+                    boxRadius: 10 // Make legend color boxes round
+                }
+            }
+        }
+    }
+});
+</script>
 @endsection

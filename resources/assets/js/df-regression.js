@@ -54,7 +54,7 @@ fetch('/api/sales')
             type: 'category',
             position: 'bottom',
             grid: {
-                color: 'rgba(100, 100, 100, 1)',
+                color: 'gray',
                 drawBorder: false,
                 borderColor: 'rgba(100, 100, 100, 1)'
               },
@@ -67,7 +67,7 @@ fetch('/api/sales')
               text: 'Sale'
             },
             grid: {
-                color: 'rgba(100, 100, 100, 1)',
+                color: 'gray',
                 drawBorder: false,
                 borderColor: 'rgba(100, 100, 100, 1)'
               },

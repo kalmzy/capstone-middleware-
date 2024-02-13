@@ -14,13 +14,10 @@ class TaskController extends Controller
 {
   public function index()
   {
-    $Low = Defect::where('severity', 'Low')->count();
-    $Medium = Defect::where('severity', 'Medium')->count();
-    $Critical = Defect::where('severity', 'Critical')->count();
     $defects = Defect::paginate(8);
 
     $defectCountByCategory = $this->getDefectCountByCategory();
-    return view('tasks.index', compact('defects', 'Low', 'Medium', 'Critical', 'defectCountByCategory'));
+    return view('tasks.index', compact('defects', 'defectCountByCategory'));
   }
 
   public function create()
