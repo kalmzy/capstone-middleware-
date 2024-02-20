@@ -1,14 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Regression extends Model
+class SalesReport extends Model
 {
-  use HasFactory;
-
   protected $table = 'sales_report';
 
   protected $fillable = ['date', 'total_quantity'];

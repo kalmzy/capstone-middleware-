@@ -54,6 +54,12 @@
           "slug": "pages-testpage"
         }
       ]
+    },
+    {
+      "url": "page-4",
+      "icon": "menu-icon tf-icons ti ti ti-report",
+      "name": "Report Archive",
+      "slug": "pages-page-4"
     }
   ]
 }

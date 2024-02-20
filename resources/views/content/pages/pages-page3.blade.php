@@ -30,8 +30,9 @@ $configData = Helper::appClasses();
 <div class="container">
   <div class="row">
     <div class="col-sm-6 col-lg-3 mb-4">
-      <div class="card ">
-        <div class="card-body">
+      <div class="card h-100">
+        <div class="card-body ">
+          <br><br><br>
           <div class="d-flex align-items-center mb-2 pb-1">
             <div class="avatar me-2">
               <span class="avatar-initial rounded bg-label-warning"><i class="ti ti-brand-speedtest"></i></span>
@@ -44,7 +45,6 @@ $configData = Helper::appClasses();
                 <div class="badge bg-label-success me-3 rounded p-2">
                   LOW :
                 </div>
-                
               </div>
               <div class="text-end">
                 <span>{{$Low}}</span>
@@ -55,7 +55,6 @@ $configData = Helper::appClasses();
                 <div class="badge bg-label-warning me-3 rounded p-2">
                   MEDIUM :
                 </div>
-                
               </div>
               <div class="text-end">
                 <span>{{$Medium}}</span>
@@ -66,7 +65,6 @@ $configData = Helper::appClasses();
                 <div class="badge bg-label-danger me-3 rounded p-2">
                   CRITICAL :
                 </div>
-                
               </div>
               <div class="text-end">
                 <span >{{$Critical}}</span>
@@ -76,119 +74,69 @@ $configData = Helper::appClasses();
         </div>
       </div>
     </div>
-<div class="col-sm-6 col-lg-3 mb-4">
-        <div class="card h-100">
-          <div class="card-body">
-            <div class="d-flex align-items-center mb-2 pb-1">
-              <div class="avatar me-2">
-                <span class="avatar-initial rounded bg-label-warning"><i class="ti ti-settings-exclamation"></i></i></span>
-              </div>
-              <h4 class="ms-1 mb-0">Most Defectives </h4>
+    <div class="col-sm-6 col-lg-3 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <br><br><br>
+          <div class="d-flex align-items-center mb-2 pb-1">
+            <div class="avatar me-2">
+              <span class="avatar-initial rounded bg-label-warning"><i class="ti ti-settings-exclamation"></i></span>
             </div>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item d-flex justify-content-between">
-                <div>
-                  <div class="badge bg-label-danger me-3 rounded p-2">
-                    prodcut 1 :
-                  </div>    
-                </div>
-                <div class="text-end">
-                  <span >30defect</span>
-                </div>
-              </li>
-              <li class="list-group-item d-flex justify-content-between">
-                <div>
-                  <div class="badge bg-label-danger me-3 rounded p-2">
-                    prodcut 1 :
-                  </div>
-                  
-                </div>
-                <div class="text-end">
-                  <span >30defect</span>
-                </div>
-              </li>
-              <li class="list-group-item d-flex justify-content-between">
-                <div>
-                  <div class="badge bg-label-danger me-3 rounded p-2">
-                    prodcut 1 :
-                  </div>
-                  
-                </div>
-                <div class="text-end">
-                  <span >30defect</span>
-                </div>
-              </li>
-            </ul>
+            <h4 class="ms-1 mb-0">Most Defectives</h4>
           </div>
-        </div>
-      </div>
-      <div class="col-sm-6 col-lg-3 mb-4">
-        <div class="card h-100">
-          <div class="card-body">
-            <div class="d-flex align-items-center mb-2 pb-1">
-              <div class="avatar me-2">
-                <span class="avatar-initial rounded bg-label-danger"><i class="ti ti-search"></i></i></span>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between">
+              <div>
+                <div class="badge bg-label-danger me-3 rounded p-2">
+                  product 1 :
+                </div>    
               </div>
-              <h4 class="ms-1 mb-0">Inspection</h4>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-6 col-lg-3 mb-4">
-        <div class="card h-100">
-          <div class="card-body">
-            <div class="d-flex align-items-center mb-2 pb-1">
-              <div class="avatar me-2">
-                <span class="avatar-initial rounded bg-label-info"><i class="ti ti-arrow-back-up"></i></i></span>
+              <div class="text-end">
+                <span >30defect</span>
               </div>
-              <h4 class="ms-1 mb-0">Returned</h4>
-            </div>
-            <p class="mb-1">Late vehicles</p>
-            <p class="mb-0">
-              <span class="fw-medium me-1">-2.5%</span>
-              <small class="text-muted">than last week</small>
-            </p>
-          </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <div>
+                <div class="badge bg-label-danger me-3 rounded p-2">
+                  product 2 :
+                </div>
+              </div>
+              <div class="text-end">
+                <span >30defect</span>
+              </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <div>
+                <div class="badge bg-label-danger me-3 rounded p-2">
+                  product 3 :
+                </div>
+              </div>
+              <div class="text-end">
+                <span >30defect</span>
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
-
-
-      <!-- Profit last month -->
-      <div class="row">
-      <div class="col-6 mb-4">
-        <div class="card">
-          <div class="card-header pb-0">
-            <h5 class="card-title mb-0"></h5>
-            <small class="text-muted"></small>
-          </div>
-          <div class="card-body">
-            <div id="profitLastMonth"></div>
-            <div class="d-flex justify-content-between align-items-center mt-3 gap-3">
-              <h4 class="mb-0">624k</h4>
-              <small class="text-success">+8.24%</small>
-            </div>
+    <div class="col-sm-6 col-lg-6 mb-4">
+      <div class="card h-100">
+        <div class="card-header header-elements">
+          <div>
+            <h5 class="card-title mb-0">Statistics</h5>
+            <small class="text-muted">Commercial networks and enterprises</small>
           </div>
         </div>
-      </div>
-
-      <div class="col-6 mb-4">
-        <div class="card">
-          <div class="card-header pb-0">
-            <h5 class="card-title mb-0"></h5>
-            <small class="text-muted"></small>
-          </div>
-          <div class="card-body">
-            <div id="defects"></div>
-            <div class="d-flex justify-content-between align-items-center mt-3 gap-3">
-              <h4 class="mb-0">624k</h4>
-              <small class="text-success">+8.24%</small>
-            </div>
-          </div>
+        <div class="card-body pt-2">
+          <div id="lineChart"></div>
         </div>
       </div>
-      </div>
- 
+    </div>
+  </div>
+
+
+
+      
 
  
     <div class="row">
@@ -200,8 +148,10 @@ $configData = Helper::appClasses();
               <div class="dropdown">
                 <button type="button" class="btn dropdown-toggle p-0" data-bs-toggle="dropdown" aria-expanded="false"><i class="ti ti-calendar"></i></button>
                 <ul class="dropdown-menu dropdown-menu-end">
-                  <li><a href="javascript:void(0);" class="dropdown-item d-flex align-items-center">Monthly</a></li>
-                  <li><a href="javascript:void(0);" class="dropdown-item d-flex align-items-center">Yearly</a></li>
+                  <li><a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" id="monthlyOption">Monthly</a></li>
+                  <li><a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" id="yearlyOption">Yearly</a></li>
+              </ul>
+              
               </div>
             </div>
           </div>
@@ -423,8 +373,102 @@ var defectChart = new Chart(ctx, {
         }
     }
 });
+   </script>
 
 
-        </script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      const lineChartEl = document.querySelector('#lineChart');
+
+      const months = @json($months);
+  const totals = @json($totals);
+
+      const lineChartConfig = {
+          chart: {
+              height: 250,
+              type: 'line',
+              parentHeightOffset: 0,
+              zoom: {
+                  enabled: false
+              },
+              toolbar: {
+                  show: false
+              }
+          },
+          series: [{
+              data: totals
+          }],
+          markers: {
+size: 6, // Adjust the size of the circles
+fillColor: '#ff0000', // Set the fill color of the circles (e.g., red)
+strokeColors: 'transparent',
+strokeWidth: 3.2,
+hover: {
+  size: 5.5
+}
+},
+          dataLabels: {
+              enabled: false
+          },
+          stroke: {
+              curve: 'straight',
+              width: 3 
+          },
+          colors: ['#ffbb44'],
+          grid: {
+            strokeDashArray: 5,
+              xaxis: {
+                  lines: {
+                      show: false
+                  }
+              },
+              padding: {
+                  top: -20
+              }
+          },
+          tooltip: {
+              custom: function ({ series, seriesIndex, dataPointIndex, w }) {
+                  return '<div class="px-2 py-1">' + '<span>' + series[seriesIndex][dataPointIndex] + '</span>' + '</div>';
+              }
+          },
+          xaxis: {
+              categories: months,
+              axisBorder: {
+                  show: false
+              },
+              axisTicks: {
+                  show: false
+              },
+              labels: {
+                  style: {
+                      colors: '#777',
+                      fontSize: '13px'
+                  }
+              }
+          },
+          yaxis: {
+              labels: {
+                  style: {
+                      colors: '#777',
+                      fontSize: '13px'
+                  }
+              }
+          },
+          responsive: [{
+        breakpoint: 768, // Breakpoint at which responsiveness should be applied
+        options: {
+            chart: {
+                height: 200 // Adjust height for smaller screens
+            }
+        }
+    }]
+      };
+
+      if (typeof lineChartEl !== 'undefined' && lineChartEl !== null) {
+          const lineChart = new ApexCharts(lineChartEl, lineChartConfig);
+          lineChart.render();
+      }
+  });
+</script>
 
 @endsection

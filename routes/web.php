@@ -5,6 +5,7 @@ use App\Http\Controllers\language\LanguageController;
 use App\Http\Controllers\pages\HomePage;
 use App\Http\Controllers\pages\Page2;
 use App\Http\Controllers\pages\Page3;
+use App\Http\Controllers\ReportArchieve;
 use App\Http\Controllers\authentications\LoginBasic;
 use App\Http\Controllers\authentications\RegisterBasic;
 use App\Http\Controllers\TaskController;
@@ -30,6 +31,7 @@ Route::get('/page-2', [Page2::class, 'index'])->name('pages-page-2');
 Route::get('/page-3', [Page3::class, 'index'])->name('pages-page-3');
 Route::get('/page-3/create', [Page3::class, 'create'])->name('pages-page-3.create');
 Route::post('/page-3', [Page3::class, 'store'])->name('pages-page-3.store');
+Route::get('/page-4', [ReportArchieve::class, 'index'])->name('pages-page-4');
 // locale
 Route::get('lang/{locale}', [LanguageController::class, 'swap']);
 

@@ -28,7 +28,10 @@
                             <label for="">quantity sold</label>
                             <input type="text" name="quantity_sold" class="form-control">
                         </div>
-                        
+                        <div class="mb-3">
+                            <label for="">Sale Date</label>
+                            <input type="date" name="sale_date" class="form-control">
+                        </div>
                         <div class="mb-3">
                             <button type="submit" class="btn btn-primary">Save</button>
                         </div>

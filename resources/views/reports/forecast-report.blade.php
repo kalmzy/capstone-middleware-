@@ -103,6 +103,7 @@
                                 <th>product price</th>
                                 <th>Qualit sold</th>
                                 <th>Total Sale</th>
+                                <th>Date of Sale</th>
                                 
                             </tr>
                         </thead>
@@ -115,6 +116,7 @@
                                     <td>{{ $item->product->price }}</td>
                                     <td>{{$item->quantity_sold}}</td>
                                     <td>₱{{$item->total_sale}}</td>
+                                    <td>{{$item->sale_date}}</td>
                                     
                                 </tr>
                             @endforeach

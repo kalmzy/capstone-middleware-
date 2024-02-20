@@ -69,15 +69,42 @@ $configData = Helper::appClasses();
 
 <div class="card  mb-4">
     <div class="card-header header-elements">
-
     </div>
     <div class="card-body pt-2">
         <canvas id="Scat" height="400"></canvas>
     </div>
   </div>
 
-
-
-
+  <div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Regression Chart</h2>
+            <div id="regression-chart"></div>
+        </div>
+        <div class="col-md-6">
+            <h2>Regression Data</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Month</th>
+                        <th>Total Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($sales as $sale)
+                        <tr>
+                            <td>{{ $sale->created_at->format('F Y') }}</td>
+                            <td>{{ $sale->total_quantity }}</td>
+                        </tr>
+                    @endforeach
+                    <tr>
+                        <td>Next Month (Predicted)</td>
+                        <td>{{ $predictedNextMonthSales }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
 @endsection

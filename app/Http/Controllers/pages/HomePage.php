@@ -95,7 +95,7 @@ class HomePage extends Controller
 
     // Extract timestamps (created_at) and amounts
     $timestamps = $sales->pluck('created_at');
-    $yValues = $sales->pluck('amount');
+    $yValues = $sales->pluck('total_quantity');
 
     // Calculate the month based on created_at timestamps
     $xValues = $timestamps->map(function ($timestamp) {

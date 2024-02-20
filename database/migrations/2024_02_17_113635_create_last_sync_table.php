@@ -10,12 +10,9 @@ return new class extends Migration {
    */
   public function up(): void
   {
-    Schema::create('sales', function (Blueprint $table) {
+    Schema::create('last_sync', function (Blueprint $table) {
       $table->id();
-      $table->foreignId('product_id')->constrained();
-      $table->integer('quantity_sold');
-      $table->decimal('total_sale', 10, 2);
-      $table->date('sale_date');
+      $table->date('last_year_month')->nullable();
       $table->timestamps();
     });
   }
@@ -25,6 +22,6 @@ return new class extends Migration {
    */
   public function down(): void
   {
-    Schema::dropIfExists('sales');
+    Schema::dropIfExists('last_sync');
   }
 };

@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
-  public function index()
+  public function index(Request $request)
   {
     $categories = Category::all();
     $products = Product::all();
@@ -56,6 +56,7 @@ class ReportController extends Controller
     $product->sales()->create([
       'quantity_sold' => $request->quantity_sold,
       'total_sale' => $total_sale,
+      'sale_date' => $request->input('sale_date'),
     ]);
     return redirect('admin/report')->with('message', 'new data added');
   }

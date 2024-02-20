@@ -78,12 +78,12 @@ $configData = Helper::appClasses();
               <div class="avatar me-2">
                 <span class="avatar-initial rounded bg-label-warning"><i class='ti ti-alert-triangle ti-md'></i></span>
               </div>
-              <h4 class="ms-1 mb-0">30</h4>
+              <h4 class="ms-1 mb-0">Product Inspection</h4>
             </div>
-            <p class="mb-1">Product With Defects</p>
+            <p class="mb-1">Total Inspected</p>
             <p class="mb-0">
               <span class="fw-medium me-1">-8.7%</span>
-              <small class="text-muted">than last week</small>
+              <small class="text-muted">this month</small>
             </p>
           </div>
         </div>
@@ -95,12 +95,12 @@ $configData = Helper::appClasses();
               <div class="avatar me-2">
                 <span class="avatar-initial rounded bg-label-danger"><i class='ti ti-git-fork ti-md'></i></span>
               </div>
-              <h4 class="ms-1 mb-0">27</h4>
+              <h4 class="ms-1 mb-0">Product Return</h4>
             </div>
-            <p class="mb-1">Product Under Inspection</p>
+            <p class="mb-1">Total Return</p>
             <p class="mb-0">
               <span class="fw-medium me-1">+4.3%</span>
-              <small class="text-muted">than last week</small>
+              <small class="text-muted">this month</small>
             </p>
           </div>
         </div>

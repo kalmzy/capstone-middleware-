@@ -14,6 +14,19 @@ class Page3 extends Controller
 {
   public function index()
   {
+    $monthlyDefects = Defect::select(DB::raw('DATE_FORMAT(created_at, "%Y-%m") as month'), DB::raw('COUNT(*) as total'))
+      ->groupBy('month')
+      ->get();
+
+    // Extracting months and totals with year
+    $months = [];
+    foreach ($monthlyDefects as $defect) {
+      $formattedDate = date_create_from_format('Y-m', $defect->month);
+      $months[] = $formattedDate->format('M Y'); // Format month abbreviation and year (e.g., Jan 2023)
+    }
+
+    $totals = $monthlyDefects->pluck('total')->toArray();
+
     $Low = Defect::where('severity', 'Low')->count();
     $Medium = Defect::where('severity', 'Medium')->count();
     $Critical = Defect::where('severity', 'Critical')->count();
@@ -31,7 +44,9 @@ class Page3 extends Controller
         'totalDefects',
         'Low',
         'Medium',
-        'Critical'
+        'Critical',
+        'months',
+        'totals'
       )
     );
   }

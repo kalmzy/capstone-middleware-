@@ -10,7 +10,7 @@ class Sale extends Model
   use HasFactory;
   protected $table = 'sales';
 
-  protected $fillable = ['product_id', 'quantity_sold', 'total_sale'];
+  protected $fillable = ['product_id', 'quantity_sold', 'total_sale', 'sale_date'];
 
   public function product()
   {

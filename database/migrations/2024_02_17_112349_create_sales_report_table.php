@@ -10,13 +10,15 @@ return new class extends Migration {
    */
   public function up(): void
   {
-    Schema::create('sales', function (Blueprint $table) {
+    Schema::create('sales_report', function (Blueprint $table) {
       $table->id();
-      $table->foreignId('product_id')->constrained();
-      $table->integer('quantity_sold');
-      $table->decimal('total_sale', 10, 2);
-      $table->date('sale_date');
+      $table->date('date');
+      $table->integer('total_quantity');
       $table->timestamps();
+    });
+
+    Schema::table('sales_report', function (Blueprint $table) {
+      $table->unique('date');
     });
   }
 
@@ -25,6 +27,6 @@ return new class extends Migration {
    */
   public function down(): void
   {
-    Schema::dropIfExists('sales');
+    Schema::dropIfExists('sales_report');
   }
 };

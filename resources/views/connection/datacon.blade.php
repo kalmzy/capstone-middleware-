@@ -36,8 +36,6 @@
     </div>
 </div>
 
-
-
 <div class="container">
     <div class="row">
         <div class="col-md-4">
@@ -51,14 +49,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if($selectedProduct)
-                        <tr>
-                            <td>{{ $selectedProduct->product_name }}</td>
-                            <td>{{ $selectedProduct->price }}</td>
-                            <td>{{ $selectedProduct->created_at }}</td>
-                          
-                        </tr>
-                    @endif
+                        @foreach ($products as $item)
+                            <tr>
+                                <td>{{$item->product_name}}</td>
+                                <td>{{$item->price}}</td>
+                                <td>{{$item->created_at}}</td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -76,6 +73,17 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <tr>
+                            <td>Unit Stock</td>
+                            @foreach ($dataWithMissingMonths as $item)
+                            @if ($item->total_quantity_sold > 0 || $loop->first)
+                              <td>{{ $selectedProduct ? $selectedProduct->price : 0 }}</td>
+                            @else
+                              <td></td>
+                            @endif
+                          @endforeach
+                          
+                        </tr>
 
                         <tr>
                             <td>price</td>
@@ -107,5 +115,72 @@
         </div>
     </div>
 </div>
+
+<div class="container mb-4 mt-4">
+    <div class="row">
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Sales
+                    <a href="{{url('admin/report/create/sale')}}" class="btn btn-primary float-end">add sale</a>
+                </h4>
+                </div>
+                <div class="card-body">
+                    <table class="table talbe-bordered">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Category type</th>
+                                <th>product name</th>
+                                <th>product price</th>
+                                <th>Qualit sold</th>
+                                <th>Total Sale</th>
+                                <th>Date of sale</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($psales as $item)
+                                <tr>
+                                    <td>{{$item->id}}</td>
+                                    <td>{{$item->product->category->category_name}}</td>
+                                    <td>{{$item->product->product_name}}</td>
+                                    <td>{{ $item->product->price }}</td>
+                                    <td>{{$item->quantity_sold}}</td>
+                                    <td>₱{{$item->total_sale}}</td>
+                                    <td>{{$item->sale_date}}</td>
+                                    
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-3"> 
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Year</th>
+                        <th>Month</th>
+                        <th>Total Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($salesData as $sale)
+                    <tr>
+                        <td>{{ $sale->year }}</td>
+                        <td>{{ $sale->month }}</td>
+                        <td>{{ $sale->total_quantity }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
 
 @endsection

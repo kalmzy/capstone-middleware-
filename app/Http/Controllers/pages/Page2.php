@@ -12,8 +12,17 @@ class Page2 extends Controller
 {
   public function index()
   {
-    // Return the equation and chart data to be displayed in the view
-    return view('content.pages.pages-page2');
+    // Fetch data from database
+    $sales = Regression::all();
+
+    // Perform regression analysis to get predicted sales for the next month
+    $predictedNextMonthSales = $this->fetchNextMonthSales($sales);
+
+    // Return the equation, chart data, and sales data to be displayed in the view
+    return view('content.pages.pages-page2', [
+      'sales' => $sales,
+      'predictedNextMonthSales' => $predictedNextMonthSales,
+    ]);
   }
 
   public function fetchsale()
@@ -21,20 +30,34 @@ class Page2 extends Controller
     // Fetch data from database
     $sales = Regression::all();
 
+    // Perform regression analysis to get predicted sales for the next month
+    $predictedNextMonthSales = $this->fetchNextMonthSales($sales);
+
+    // Return the JSON response with data
+    return response()->json([
+      'sales' => $sales,
+      'predictedNextMonthSales' => $predictedNextMonthSales,
+    ]);
+  }
+
+  private function fetchNextMonthSales($sales)
+  {
     // Extract timestamps (created_at) and amounts
     $timestamps = $sales->pluck('created_at');
-    $yValues = $sales->pluck('amount');
+    $yValues = $sales->pluck('total_quantity');
 
     // Calculate the month based on created_at timestamps
     $xValues = $timestamps->map(function ($timestamp) {
       return $timestamp->format('n'); // 'n' returns the month without leading zeros
     });
+
     // Convert sample data to BigDecimal objects
     $xValues = $xValues->toArray();
     $yValues = $yValues->toArray();
 
     $xValues = array_map(fn($value) => BigDecimal::of($value), $xValues);
     $yValues = array_map(fn($value) => BigDecimal::of($value), $yValues);
+
     // Calculate the mean of x and y
     $meanX = BigDecimal::of(0);
     $meanY = BigDecimal::of(0);
@@ -82,11 +105,6 @@ class Page2 extends Controller
     // Use the regression equation to predict sales for the next month
     $predictedNextMonthSales = $slope->toFloat() * $nextMonthX + $intercept->toFloat();
 
-    return response()->json([
-      'xValues' => $xValues,
-      'yValues' => $yValues,
-      'regressionLine' => $regressionLine,
-      'predictedNextMonthSales' => $predictedNextMonthSales,
-    ]);
+    return $predictedNextMonthSales;
   }
 }

@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Defect;
+use App\Models\Sale;
 
 class DatabaseSeeder extends Seeder
 {
