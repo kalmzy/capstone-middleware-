@@ -42,6 +42,7 @@ class DataController extends Controller
           DB::table('sales_report')->insert([
             'date' => $yearMonth,
             'total_quantity' => $salesSummary->total_quantity,
+            'created_at' => now(),
           ]);
         }
       }

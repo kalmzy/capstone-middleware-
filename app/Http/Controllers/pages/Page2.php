@@ -7,12 +7,15 @@ use Illuminate\Http\Request;
 use Brick\Math\BigDecimal;
 use Brick\Math\RoundingMode;
 use App\Models\Regression;
+use App\Models\Product;
+use App\Models\PredictedSale;
 
 class Page2 extends Controller
 {
   public function index()
   {
     // Fetch data from database
+    $products = Product::all();
     $sales = Regression::all();
 
     // Perform regression analysis to get predicted sales for the next month
@@ -21,7 +24,9 @@ class Page2 extends Controller
     // Return the equation, chart data, and sales data to be displayed in the view
     return view('content.pages.pages-page2', [
       'sales' => $sales,
-      'predictedNextMonthSales' => $predictedNextMonthSales,
+      'predictedNextMonthSales' => $predictedNextMonthSales['predictedNextMonthSales'],
+      'regressionLine' => $predictedNextMonthSales['regressionLine'],
+      'products' => $products,
     ]);
   }
 
@@ -36,7 +41,8 @@ class Page2 extends Controller
     // Return the JSON response with data
     return response()->json([
       'sales' => $sales,
-      'predictedNextMonthSales' => $predictedNextMonthSales,
+      'predictedNextMonthSales' => $predictedNextMonthSales['predictedNextMonthSales'],
+      'regressionLine' => $predictedNextMonthSales['regressionLine'],
     ]);
   }
 
@@ -105,6 +111,20 @@ class Page2 extends Controller
     // Use the regression equation to predict sales for the next month
     $predictedNextMonthSales = $slope->toFloat() * $nextMonthX + $intercept->toFloat();
 
-    return $predictedNextMonthSales;
+    // Check if a prediction for the next month already exists in the database
+    $prediction = PredictedSale::where('month', $nextMonthX)->first();
+
+    if (!$prediction) {
+      // Insert the new prediction into the database
+      $prediction = new PredictedSale();
+      $prediction->month = $nextMonthX;
+      $prediction->predicted_sales = $predictedNextMonthSales;
+      $prediction->save();
+    }
+
+    return [
+      'predictedNextMonthSales' => $predictedNextMonthSales,
+      'regressionLine' => $regressionLine,
+    ];
   }
 }

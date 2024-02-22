@@ -4,16 +4,18 @@ namespace App\Http\Controllers;
 use App\Models\Sale;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\PredictedSale;
 use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
   public function index(Request $request)
   {
+    $prediction = PredictedSale::all();
     $categories = Category::all();
     $products = Product::all();
     $sales = Sale::all();
-    return view('reports.forecast-report', compact('categories', 'products', 'sales'));
+    return view('reports.forecast-report', compact('prediction', 'categories', 'products', 'sales'));
   }
   public function create()
   {

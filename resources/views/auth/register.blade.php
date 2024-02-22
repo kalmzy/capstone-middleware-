@@ -15,18 +15,8 @@ $configData = Helper::appClasses();
 @section('content')
 <div class="authentication-wrapper authentication-cover authentication-bg">
   <div class="authentication-inner row">
-    <!-- /Left Text -->
-    <div class="d-none d-lg-flex col-lg-7 p-0">
-      <div class="auth-cover-bg auth-cover-bg-color d-flex justify-content-center align-items-center">
-        <img src="{{ asset('assets/img/illustrations/auth-register-illustration-'.$configData['style'].'.png') }}" alt="auth-register-cover" class="img-fluid my-5 auth-illustration" data-app-light-img="illustrations/auth-register-illustration-light.png" data-app-dark-img="illustrations/auth-register-illustration-dark.png">
-
-        <img src="{{ asset('assets/img/illustrations/bg-shape-image-'.$configData['style'].'.png') }}" alt="auth-register-cover" class="platform-bg" data-app-light-img="illustrations/bg-shape-image-light.png" data-app-dark-img="illustrations/bg-shape-image-dark.png">
-      </div>
-    </div>
-    <!-- /Left Text -->
-
     <!-- Register -->
-    <div class="d-flex col-12 col-lg-5 align-items-center p-sm-5 p-4">
+    <div class="app-brand justify-content-center mb-4 mt-2">
       <div class="w-px-400 mx-auto">
         <!-- Logo -->
         <div class="app-brand mb-4">
@@ -36,8 +26,7 @@ $configData = Helper::appClasses();
           </a>
         </div>
         <!-- /Logo -->
-        <h3 class="mb-1">Adventure starts here 🚀</h3>
-        <p class="mb-4">Make your app management easy and fun!</p>
+
 
         <form id="formAuthentication" class="mb-3" action="{{ route('register') }}" method="POST">
           @csrf
@@ -111,24 +100,6 @@ $configData = Helper::appClasses();
           </a>
           @endif
         </p>
-
-        <div class="divider my-4">
-          <div class="divider-text">or</div>
-        </div>
-
-        <div class="d-flex justify-content-center">
-          <a href="javascript:;" class="btn btn-icon btn-label-facebook me-3">
-            <i class="tf-icons fa-brands fa-facebook-f fs-5"></i>
-          </a>
-
-          <a href="javascript:;" class="btn btn-icon btn-label-google-plus me-3">
-            <i class="tf-icons fa-brands fa-google fs-5"></i>
-          </a>
-
-          <a href="javascript:;" class="btn btn-icon btn-label-twitter">
-            <i class="tf-icons fa-brands fa-twitter fs-5"></i>
-          </a>
-        </div>
       </div>
     </div>
     <!-- /Register -->

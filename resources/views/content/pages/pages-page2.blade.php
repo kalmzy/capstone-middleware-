@@ -22,67 +22,40 @@ $configData = Helper::appClasses();
 @section('title', 'Demand Forecasting')
 
 @section('content')
-<style>
 
-    .custom-input {
-        position: relative;
-        width: 150px; /* Adjust the width as needed */
-        margin: 10px;
-    }
-
-    .custom-input label {
-        position: absolute;
-        top: -10px; /* Adjust the top position to move the label inside the border */
-        left: 5px; /* Adjust the left position to position the label */
-        background-color: white;
-        padding: 0 3px;
-        font-size: 12px;
-        color: #999;
-    }
-
-    .custom-input input {
-        border: 1px solid #ccc;
-        padding: 10px;
-        width: 100%;
-        background: transparent;
-    }
-</style>
-
-<form id="dateFilterForm" >
-
-    <div class="row mb-2">
-    <div class="form-group col-lg-2  ">
-        <div class="custom-input">
-            <label for="start_date">Start Date</label>
-            <input type="date" name="start_date" required>
+<div class="container">
+    <div class="row justify-content-center"> <!-- Added classes -->
+        <div class="col-md-10">
+            <div class="card mb-7">
+                <div class="card-header header-elements">
+                        <div class="col-md-6">
+                            <h3>Demand Forecasting</h3>
+                        </div>
+                        <div class="col-md-6 d-flex justify-content-end">
+                            <div class="form-group mb-0">
+                                <form method="get" action="">
+                                    <div class="input-group">
+                                        <label for="product" class="visually-hidden">Select product:</label>
+                                        <select class="form-select form-select-sm" id="product" name="product" onchange="this.form.submit()">
+                                            <option value="0">Select product</option>
+                                            @foreach($products as $product)
+                                                <option value="" {{$product ->id}}>{{ $product->product_name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                </div>
+                <div class="card-body pt-2">
+                    <canvas id="Scat" height="400"></canvas>
+                </div>
+            </div>
         </div>
-    </div>
+    
 
-    <div class="form-group  col-lg-2 ">
-        <div class="custom-input">
-            <label for="end_date">End Date</label>
-            <input type="date" name="end_date" required>
-        </div>
-    </div>
-    </div>
-</form>
-
-<div class="card  mb-4">
-    <div class="card-header header-elements">
-    </div>
-    <div class="card-body pt-2">
-        <canvas id="Scat" height="400"></canvas>
-    </div>
-  </div>
-
-  <div class="container">
-    <div class="row">
-        <div class="col-md-6">
-            <h2>Regression Chart</h2>
-            <div id="regression-chart"></div>
-        </div>
-        <div class="col-md-6">
-            <h2>Regression Data</h2>
+        <div class="col-md-2">
+            <h4>Regression Data</h4>
             <table class="table">
                 <thead>
                     <tr>
@@ -106,5 +79,6 @@ $configData = Helper::appClasses();
         </div>
     </div>
 </div>
+
 
 @endsection

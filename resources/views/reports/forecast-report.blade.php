@@ -127,4 +127,36 @@
         </div>
     </div>
 </div>
+
+<div class="container mb-4">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <table class="table talbe-bordered">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Product Name</th>
+                                <th>Predicted Month</th>
+                                <th>Quantity Prediction</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($prediction as $item)
+                                <tr>
+                                    <td>{{$item->id}}</td>
+                                    <td>set it up</td>
+                                    <td>{{ date('F', strtotime('2024-' . $item->month . '-01')) }}</td>
+                                    <td>{{$item->predicted_sales}}</td>
+                                    
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
