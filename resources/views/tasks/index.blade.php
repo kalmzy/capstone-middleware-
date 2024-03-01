@@ -142,8 +142,7 @@
               <th class="no-wrap" >Description</th>
               <th class="no-wrap" >Status</th>
               <th class="no-wrap" >Severity</th>
-              <th class="no-wrap" >Assigned To</th>
-              <th class="no-wrap" >Reported By</th>
+              <th class="no-wrap" >inspector</th>
               <th class="no-wrap" >Created At</th>
           </tr>
       </thead>
@@ -156,8 +155,7 @@
             <td>{{ $defect->description }}</td>
             <td>{{ $defect->status }}</td>
             <td>{{ $defect->severity }}</td>
-            <td>{{ $defect->assigned_to }}</td>
-            <td>{{ $defect->reported_by }}</td>
+            <td>{{ $defect->inspector }}</td>
             <td>{{ $defect->created_at }}</td>
         </tr>
         @endforeach

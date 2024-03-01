@@ -6,51 +6,76 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Brick\Math\BigDecimal;
 use Brick\Math\RoundingMode;
-use App\Models\Regression;
+use App\Models\Sale;
 use App\Models\Product;
 use App\Models\PredictedSale;
 
 class Page2 extends Controller
 {
-  public function index()
+  public function index(Request $request)
   {
     // Fetch data from database
     $products = Product::all();
-    $sales = Regression::all();
+    $sales = Sale::query();
 
-    // Perform regression analysis to get predicted sales for the next month
-    $predictedNextMonthSales = $this->fetchNextMonthSales($sales);
+    // Check if a product is selected
+    $selectedProduct = $request->input('product');
 
-    // Return the equation, chart data, and sales data to be displayed in the view
+    // Set default selected product to the first product if not already set
+    if (!$selectedProduct && $products->isNotEmpty()) {
+      $selectedProduct = $products->first()->id;
+    }
+
+    if ($selectedProduct) {
+      // Filter sales data for the selected product
+      $sales->where('product_id', $selectedProduct);
+    }
+
+    $sales = $sales->get();
+
+    // Perform regression analysis to get predicted sales for each product
+    $predictedSalesData = $this->fetchNextMonthSales($sales, $products);
+
+    // Return the data to the view
     return view('content.pages.pages-page2', [
       'sales' => $sales,
-      'predictedNextMonthSales' => $predictedNextMonthSales['predictedNextMonthSales'],
-      'regressionLine' => $predictedNextMonthSales['regressionLine'],
       'products' => $products,
+      'predictedSalesData' => $predictedSalesData,
+      'selectedProduct' => $selectedProduct,
+      'predictedNextMonthSales' => $predictedSalesData[$selectedProduct]['predictedNextMonthSales'] ?? null,
+      'predictedProductName' => $predictedSalesData[$selectedProduct]['predictedProductName'] ?? '',
     ]);
   }
 
-  public function fetchsale()
+  private function fetchNextMonthSales($sales, $products)
   {
-    // Fetch data from database
-    $sales = Regression::all();
+    // Initialize an array to store predictions for each product
+    $predictions = [];
 
-    // Perform regression analysis to get predicted sales for the next month
-    $predictedNextMonthSales = $this->fetchNextMonthSales($sales);
+    // Iterate through each product
+    foreach ($products as $product) {
+      // Filter sales data for the current product
+      $productSales = $sales->where('product_id', $product->id);
 
-    // Return the JSON response with data
-    return response()->json([
-      'sales' => $sales,
-      'predictedNextMonthSales' => $predictedNextMonthSales['predictedNextMonthSales'],
-      'regressionLine' => $predictedNextMonthSales['regressionLine'],
-    ]);
+      // Perform regression analysis for the current product
+      $predictedSalesData = $this->calculateRegressionForProduct($productSales);
+
+      // Add the predicted sales data to the predictions array
+      $predictions[$product->id] = [
+        'predictedProductName' => $product->product_name,
+        'predictedNextMonthSales' => $predictedSalesData['predictedNextMonthSales'],
+        'regressionLine' => $predictedSalesData['regressionLine'],
+      ];
+    }
+
+    return $predictions;
   }
 
-  private function fetchNextMonthSales($sales)
+  private function calculateRegressionForProduct($productSales)
   {
     // Extract timestamps (created_at) and amounts
-    $timestamps = $sales->pluck('created_at');
-    $yValues = $sales->pluck('total_quantity');
+    $timestamps = $productSales->pluck('created_at');
+    $yValues = $productSales->pluck('quantity_sold');
 
     // Calculate the month based on created_at timestamps
     $xValues = $timestamps->map(function ($timestamp) {
@@ -64,62 +89,54 @@ class Page2 extends Controller
     $xValues = array_map(fn($value) => BigDecimal::of($value), $xValues);
     $yValues = array_map(fn($value) => BigDecimal::of($value), $yValues);
 
-    // Calculate the mean of x and y
-    $meanX = BigDecimal::of(0);
-    $meanY = BigDecimal::of(0);
+    // Initialize total variables for mean calculation
+    $totalX = BigDecimal::zero();
+    $totalY = BigDecimal::zero();
+    $countX = count($xValues);
+    $countY = count($yValues);
 
-    foreach ($xValues as $x) {
-      $meanX = $meanX->plus($x);
+    // Sum up all x and y values
+    foreach ($xValues as $key => $x) {
+      $totalX = $totalX->plus($x);
+      $totalY = $totalY->plus($yValues[$key]);
     }
 
-    $meanX = $meanX->dividedBy(count($xValues), 10, RoundingMode::HALF_UP);
+    // Calculate the mean of x and y, ensuring we don't divide by zero
+    $meanX = $countX > 0 ? $totalX->dividedBy(BigDecimal::of($countX), 10, RoundingMode::HALF_UP) : BigDecimal::zero();
+    $meanY = $countY > 0 ? $totalY->dividedBy(BigDecimal::of($countY), 10, RoundingMode::HALF_UP) : BigDecimal::zero();
 
-    foreach ($yValues as $y) {
-      $meanY = $meanY->plus($y);
-    }
-
-    $meanY = $meanY->dividedBy(count($yValues), 10, RoundingMode::HALF_UP);
-
-    // Calculate the slope (m)
-    $numerator = BigDecimal::of(0);
-    $denominator = BigDecimal::of(0);
+    // Calculate the slope (m) and intercept (b)
+    $numerator = BigDecimal::zero();
+    $denominator = BigDecimal::zero();
 
     foreach ($xValues as $key => $x) {
       $numerator = $numerator->plus($x->minus($meanX)->multipliedBy($yValues[$key]->minus($meanY)));
       $denominator = $denominator->plus($x->minus($meanX)->multipliedBy($x->minus($meanX)));
     }
 
-    $slope = $numerator->dividedBy($denominator, 10, RoundingMode::HALF_UP);
+    if ($denominator->isPositive()) {
+      $slope = $numerator->dividedBy($denominator, 10, RoundingMode::HALF_UP);
+      $intercept = $meanY->minus($slope->multipliedBy($meanX));
 
-    // Calculate the y-intercept (b)
-    $intercept = $meanY->minus($slope->multipliedBy($meanX));
+      $regressionLine = [];
+      foreach ($xValues as $x) {
+        $predictedY = $slope->multipliedBy(BigDecimal::of($x))->plus($intercept);
+        $regressionLine[] = ['x' => $x, 'y' => $predictedY->toFloat()];
+      }
 
-    // Prepare data for the chart
-    $xValues = array_map(fn($value) => $value->toFloat(), $xValues); // Convert BigDecimal to float
-    $regressionLine = [];
-
-    foreach ($xValues as $x) {
-      $regressionLine[] = ['x' => $x, 'y' => $slope->toFloat() * $x + $intercept->toFloat()];
-    }
-
-    // Add the next month to the xValues array
-    $nextMonthX = BigDecimal::of(max($xValues))
-      ->plus(1)
-      ->toFloat();
-    $xValues[] = $nextMonthX;
-
-    // Use the regression equation to predict sales for the next month
-    $predictedNextMonthSales = $slope->toFloat() * $nextMonthX + $intercept->toFloat();
-
-    // Check if a prediction for the next month already exists in the database
-    $prediction = PredictedSale::where('month', $nextMonthX)->first();
-
-    if (!$prediction) {
-      // Insert the new prediction into the database
-      $prediction = new PredictedSale();
-      $prediction->month = $nextMonthX;
-      $prediction->predicted_sales = $predictedNextMonthSales;
-      $prediction->save();
+      $maxMonth = max($xValues);
+      $nextMonthX = $maxMonth->plus(1);
+      if ($nextMonthX->toInt() > 12) {
+        // If next month falls into the next year, reset to January
+        $nextMonthX = BigDecimal::of(1);
+      }
+      $predictedNextMonthSales = $slope
+        ->multipliedBy($nextMonthX)
+        ->plus($intercept)
+        ->toFloat();
+    } else {
+      $regressionLine = [];
+      $predictedNextMonthSales = 0; // Handle division by zero by setting a default value
     }
 
     return [

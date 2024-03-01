@@ -89,7 +89,7 @@
 
             <div class="card">
                 <div class="card-header">
-                    <h4>product details
+                    <h4>sale details
                     <a href="{{url('admin/report/create/sale')}}" class="btn btn-primary float-end">add sale</a>
                 </h4>
                 </div>
@@ -128,7 +128,11 @@
     </div>
 </div>
 
-<div class="container mb-4">
+
+
+
+
+<div class="container col-6 mb-4">
     <div class="row">
         <div class="col-md-12">
             <div class="card">
@@ -145,8 +149,9 @@
                         <tbody>
                             @foreach ($prediction as $item)
                                 <tr>
+                                    
                                     <td>{{$item->id}}</td>
-                                    <td>set it up</td>
+                                    <td>{{ $prediction->id }}</td>
                                     <td>{{ date('F', strtotime('2024-' . $item->month . '-01')) }}</td>
                                     <td>{{$item->predicted_sales}}</td>
                                     

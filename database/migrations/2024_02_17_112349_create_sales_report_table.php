@@ -13,6 +13,11 @@ return new class extends Migration {
     Schema::create('sales_report', function (Blueprint $table) {
       $table->id();
       $table->date('date');
+      $table->unsignedBigInteger('product_id'); // Change to unsignedBigInteger to match the product ID type
+      $table
+        ->foreign('product_id')
+        ->references('id')
+        ->on('products'); // Add foreign key constraint
       $table->integer('total_quantity');
       $table->timestamps();
     });

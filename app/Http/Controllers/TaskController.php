@@ -34,7 +34,7 @@ class TaskController extends Controller
       'description' => 'required',
       'status' => 'required|in:Open,Resolved,Closed',
       'severity' => 'required|in:Low,Medium,Critical',
-      'assigned_to' => 'required',
+      'inspector' => 'required',
       'reported_by' => 'required',
     ]);
     Defect::create($validatedData);

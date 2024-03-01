@@ -14,39 +14,10 @@ class DataController extends Controller
 {
   public function index(Request $request)
   {
-    $salesData = DB::table('sales')
+    $salesData = Sale::with('product')
       ->selectRaw('SUM(quantity_sold) as total_quantity, YEAR(sale_date) as year, MONTH(sale_date) as month')
       ->groupByRaw('YEAR(sale_date), MONTH(sale_date)')
       ->get();
-    $lastReport = DB::table('sales_report')
-      ->orderBy('date', 'desc')
-      ->first();
-    // Proceed only if sales data is not empty and has changed since the last insertion
-    if (
-      $salesData->isNotEmpty() &&
-      (!$lastReport || $lastReport->total_quantity != $salesData->sum('total_quantity'))
-    ) {
-      // Process sales data
-      foreach ($salesData as $salesSummary) {
-        // Construct a valid date object for the first day of the month
-        $yearMonth = sprintf('%04d-%02d-01', $salesSummary->year, $salesSummary->month);
-
-        // Check if there's an existing record for the same date
-        $existingRecord = DB::table('sales_report')
-          ->where('date', $yearMonth)
-          ->first();
-
-        // Only insert new record if it doesn't already exist
-        if (!$existingRecord) {
-          // Insert data into the sales_report table
-          DB::table('sales_report')->insert([
-            'date' => $yearMonth,
-            'total_quantity' => $salesSummary->total_quantity,
-            'created_at' => now(),
-          ]);
-        }
-      }
-    }
 
     $categoryId = $request->query('category') ?? $request->input('category');
 

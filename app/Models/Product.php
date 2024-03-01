@@ -25,4 +25,8 @@ class Product extends Model
   {
     return $this->hasMany(Defect::class);
   }
+  public function regression()
+  {
+    return $this->hasMany(Regression::class, 'product_id', 'id');
+  }
 }

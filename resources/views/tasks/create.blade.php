@@ -58,12 +58,8 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="assigned_to">Assigned To</label>
-                            <textarea class="form-control" id="assigned_to" name="assigned_to" rows="3" required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="reported_by">Reported by</label>
-                            <textarea class="form-control" id="reported_by" name="reported_by" rows="3" required></textarea>
+                            <label for="inspector">inspector</label>
+                            <textarea class="form-control" id="inspector" name="inspector" rows="3" required></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">Create</button>
                         @if ($errors->any())

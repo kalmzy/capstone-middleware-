@@ -22,8 +22,7 @@ $configData = Helper::appClasses();
         <!-- Logo -->
         <div class="app-brand justify-content-center mb-4 mt-2">
           <a href="{{url('/')}}" class="app-brand-link gap-2">
-            <span class="mt-4"><img src="{{ asset('assets\img\favicon\bbox-express-logo.png') }}" alt="logo" width="40" height="40"  style="margin-top: -25px;"/></span>
-  
+            <span class="mt-4"><img src="{{ asset('assets\img\favicon\bbox-express-logo.png') }}" alt="logo" width="40" height="40"  style="margin-top: -25px;"/></span> 
             <span class="app-brand-text demo menu-text fw-bold">{{config('variables.templateName')}}</span>
           </a>
         </div>

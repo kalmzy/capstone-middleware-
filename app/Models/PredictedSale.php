@@ -7,5 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PredictedSale extends Model
 {
-    use HasFactory;
+  use HasFactory;
+
+  protected $fillable = ['product_id', 'date', 'total_quantity'];
 }

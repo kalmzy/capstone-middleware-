@@ -26,10 +26,7 @@ return new class extends Migration {
       $table->text('description');
       $table->enum('status', ['open', 'resolved', 'closed'])->default('open');
       $table->enum('severity', ['low', 'medium', 'high', 'critical'])->default('medium');
-      $table->string('assigned_to');
-      $table->string('reported_by');
-      //$table->unsignedBigInteger('assigned_to')->nullable();
-      //$table->unsignedBigInteger('reported_by')->nullable();
+      $table->string('inspector');
       $table->timestamps();
     });
   }
