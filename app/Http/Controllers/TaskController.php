@@ -6,15 +6,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use Illuminate\Http\Request;
-use App\Models\Defect;
-use App\Models\Product;
+use App\Models\LmsG45ProductDefect;
+use App\Models\lms_g41_products;
 use Illuminate\Validation\Rule;
 
 class TaskController extends Controller
 {
   public function index()
   {
-    $defects = Defect::paginate(8);
+    $defects = LmsG45ProductDefect::paginate(8);
 
     $defectCountByCategory = $this->getDefectCountByCategory();
     return view('tasks.index', compact('defects', 'defectCountByCategory'));
@@ -22,14 +22,14 @@ class TaskController extends Controller
 
   public function create()
   {
-    $products = Product::all();
+    $products = lms_g41_products::all();
     return view('tasks.create', compact('products'));
   }
 
   public function store(Request $request)
   {
     $validatedData = $request->validate([
-      'product_id' => 'required|integer|exists:products,id',
+      'product_id' => 'required|integer|exists:lms_g41_products,id',
       'name' => 'required|in:Dimensional,Surface,Material,Functional,Assembly,Aesthetic,Packaging,Labeling',
       'description' => 'required',
       'status' => 'required|in:Open,Resolved,Closed',
@@ -37,7 +37,7 @@ class TaskController extends Controller
       'inspector' => 'required',
       'reported_by' => 'required',
     ]);
-    Defect::create($validatedData);
+    LmsG45ProductDefect::create($validatedData);
 
     session()->flash('success', 'Record created successfully');
     return redirect()->route('tasks.index');
@@ -45,14 +45,14 @@ class TaskController extends Controller
 
   public function getDefectCountByCategory()
   {
-    $dimensionDefects = Defect::where('name', 'Dimensional')->count();
-    $packagingDefects = Defect::where('name', 'Packaging')->count();
-    $surfaceDefects = Defect::where('name', 'Surface')->count();
-    $materialDefects = Defect::where('name', 'Material')->count();
-    $functionalDefects = Defect::where('name', 'Functional')->count();
-    $assemblyDefects = Defect::where('name', 'Assembly')->count();
-    $aestheticDefects = Defect::where('name', 'Aesthetic')->count();
-    $labelingDefects = Defect::where('name', 'Labeling')->count();
+    $dimensionDefects = LmsG45ProductDefect::where('name', 'Dimensional')->count();
+    $packagingDefects = LmsG45ProductDefect::where('name', 'Packaging')->count();
+    $surfaceDefects = LmsG45ProductDefect::where('name', 'Surface')->count();
+    $materialDefects = LmsG45ProductDefect::where('name', 'Material')->count();
+    $functionalDefects = LmsG45ProductDefect::where('name', 'Functional')->count();
+    $assemblyDefects = LmsG45ProductDefect::where('name', 'Assembly')->count();
+    $aestheticDefects = LmsG45ProductDefect::where('name', 'Aesthetic')->count();
+    $labelingDefects = LmsG45ProductDefect::where('name', 'Labeling')->count();
 
     return [
       'dimension' => $dimensionDefects,

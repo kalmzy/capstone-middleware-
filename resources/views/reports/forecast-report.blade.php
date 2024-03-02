@@ -6,41 +6,8 @@
 @if (session('message'))
                 <div class="alert alert-success">{{session('message')}}</div>    
             @endif
-<div class="container mb-4">
-    <div class="row">
-        <div class="col-md-12">
-            
 
-            <div class="card">
-                <div class="card-header">
-                    <h4>category detail
-                    <a href="{{url('admin/report/create/category')}}" class="btn btn-primary float-end">add category</a>
-                </h4>
-                </div>
-                <div class="card-body">
-                    <table class="table talbe-bordered">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Category Name</th>
-                                
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($categories as $item)
-                                <tr>
-                                    <td>{{$item->id}}</td>
-                                    <td>{{$item->category_name}}</td>
-                                    
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
 
 <div class="container mb-4">
     <div class="row">
@@ -58,7 +25,6 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Category Name</th>
                                 <th>Product Name</th>
                                 <th>price</th>
                                 
@@ -68,9 +34,8 @@
                             @foreach ($products as $item)
                                 <tr>
                                     <td>{{$item->id}}</td>
-                                    <td>{{$item->category->category_name}}</td>
-                                    <td>{{$item->product_name}}</td>
-                                    <td>₱{{$item->price}}</td>
+                                    <td>{{$item->name}}</td>
+                                    <td>₱{{$item->unit_price}}</td>
                                     
                                 </tr>
                             @endforeach
@@ -98,7 +63,6 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Category type</th>
                                 <th>product name</th>
                                 <th>product price</th>
                                 <th>Qualit sold</th>
@@ -111,9 +75,8 @@
                             @foreach ($sales as $item)
                                 <tr>
                                     <td>{{$item->id}}</td>
-                                    <td>{{$item->product->category->category_name}}</td>
-                                    <td>{{$item->product->product_name}}</td>
-                                    <td>{{ $item->product->price }}</td>
+                                    <td>{{$item->product->name}}</td>
+                                    <td>{{ $item->product->unit_price }}</td>
                                     <td>{{$item->quantity_sold}}</td>
                                     <td>₱{{$item->total_sale}}</td>
                                     <td>{{$item->sale_date}}</td>

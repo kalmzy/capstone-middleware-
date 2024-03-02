@@ -5,12 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Sale extends Model
+class LmsG45AnnualPredictedSale extends Model
 {
   use HasFactory;
-  protected $table = 'sales';
 
-  protected $fillable = ['product_id', 'quantity_sold', 'total_sale', 'sale_date'];
+  protected $table = 'lms_g45_annualpredictedsales';
+
+  protected $fillable = ['product_id', 'year', 'predicted_sales'];
+
+  protected $dates = ['year'];
 
   public function product()
   {

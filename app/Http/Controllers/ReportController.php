@@ -2,63 +2,48 @@
 
 namespace App\Http\Controllers;
 use App\Models\Sale;
-use App\Models\Product;
-use App\Models\Category;
-use App\Models\PredictedSale;
+use App\Models\LmsG41Product;
+use App\Models\LmsG45MonthlyPredictedSale;
 use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
   public function index(Request $request)
   {
-    $prediction = PredictedSale::all();
-    $categories = Category::all();
-    $products = Product::all();
+    $prediction = LmsG45MonthlyPredictedSale::all();
+    $products = LmsG41Product::all();
     $sales = Sale::all();
-    return view('reports.forecast-report', compact('prediction', 'categories', 'products', 'sales'));
-  }
-  public function create()
-  {
-    return view('reports.create-category');
+    return view('reports.forecast-report', compact('prediction', 'products', 'sales'));
   }
   public function createProduct()
   {
-    $categories = Category::all();
-    return view('reports.create-product', compact('categories'));
+    return view('reports.create-product');
   }
   public function createSale()
   {
-    $products = Product::all();
+    $products = LmsG41Product::all();
     return view('reports.create-sale', compact('products'));
-  }
-  public function store(Request $request)
-  {
-    Category::create([
-      'category_name' => $request->category_name,
-    ]);
-
-    return redirect('admin/report')->with('message', 'new data added');
   }
 
   public function storeProduct(Request $request)
   {
-    $category = Category::findOrFail($request->category_id);
-    $category->products()->create([
-      'product_name' => $request->product_name,
-      'price' => $request->price,
-    ]);
+    $product = new LmsG41Product(); // Create a new instance of the product model
+    $product->name = $request->name;
+    $product->unit_price = $request->unit_price;
+    $product->save();
 
     return redirect('admin/report')->with('message', 'new data added');
   }
 
   public function storeSale(Request $request)
   {
-    $product = Product::with('category')->findOrFail($request->product_id);
-    $total_sale = $product->price * $request->quantity_sold;
+    $product = LmsG41Product::findOrFail($request->product_id); // Retrieve the product by its ID
+
+    $total_sale = $product->unit_price * $request->quantity_sold;
     $product->sales()->create([
       'quantity_sold' => $request->quantity_sold,
       'total_sale' => $total_sale,
-      'sale_date' => $request->input('sale_date'),
+      'sale_date' => $request->sale_date,
     ]);
     return redirect('admin/report')->with('message', 'new data added');
   }

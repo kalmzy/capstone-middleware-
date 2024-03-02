@@ -26,7 +26,7 @@
                             <select name="product" class="form-select form-select-sm me-2">
                                 @foreach($products as $product)
                                     <option value="{{ $product->id }}" {{ $selectedProduct == $product->id ? 'selected' : '' }}>
-                                        {{ $product->product_name }}
+                                        {{ $product->name }}
                                     </option>
                                 @endforeach
                             </select>
@@ -56,7 +56,7 @@
                 <tbody>
                     @foreach($sales as $sale)
                         <tr>
-                            <td>{{ $sale->product->product_name }}</td>
+                            <td>{{ $sale->product->name }}</td>
                             <td>{{ $sale->quantity_sold }}</td>
                             <td>{{ $sale->created_at->format('M Y') }}</td>
                         </tr>
@@ -72,76 +72,94 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    var ctx = document.getElementById('salesChart').getContext('2d');
+var ctx = document.getElementById('salesChart').getContext('2d');
 
-    var lastIndex = 0;
-    @foreach($sales as $index => $sale)
-        lastIndex = {{ $index }};
+// Determine the last index of the sales data
+var lastIndex = 0;
+@foreach($sales as $index => $sale)
+    lastIndex = {{ $index }};
+@endforeach
+
+// Define labels and datasets based on the sales data and predicted sales
+var labels = [
+    @foreach($sales as $sale)
+        '{{ $sale->created_at->format("M Y") }}',
     @endforeach
+];
 
-    var labels = [
-        @foreach($sales as $sale)
-            '{{ $sale->created_at->format("M Y") }}',
-        @endforeach
-    ];
-
-    var datasets = [
-        {
-            label: 'Actual Sales',
-            data: [
-                @foreach($sales as $sale)
-                    {{ $sale->quantity_sold }},
-                @endforeach
-            ],
-            borderColor: 'green',
-            backgroundColor: 'rgba(0, 255, 0, 0.1)',
-            fill: false
-        },
-        {
-            label: 'Regression Line',
-            data: [
-                @foreach($predictedSalesData[$selectedProduct]['regressionLine'] as $point)
-                    {{ $point['y'] }},
-                @endforeach
-            ],
-            borderColor: 'blue',
-            backgroundColor: 'rgba(0, 0, 255, 0.1)',
-            fill: false
-        }
-    ];
-
-    var nextMonthIndex = lastIndex + 1;
-    labels.splice(nextMonthIndex, 0, 'Next Month');
-    datasets.push({
-        label: 'Predicted Sales Next Month',
-        data: Array(nextMonthIndex).fill(null).concat([{{ $predictedNextMonthSales }}]),
-        borderColor: 'red',
-        backgroundColor: 'rgba(255, 0, 0, 0.1)',
+var datasets = [
+    {
+        label: 'Actual Sales',
+        data: [
+            @foreach($sales as $sale)
+                {{ $sale->quantity_sold }},
+            @endforeach
+        ],
+        borderColor: 'green',
+        backgroundColor: 'rgba(0, 255, 0, 0.1)',
         fill: false
-    });
+    },
+    {
+        label: 'Regression Line',
+        data: [
+            @foreach($predictedSalesData[$selectedProduct]['regressionLine'] as $point)
+                {{ $point['y'] }},
+            @endforeach
+        ],
+        borderColor: 'blue',
+        backgroundColor: 'rgba(0, 0, 255, 0.1)',
+        fill: false
+    }
+];
 
-    var salesChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: datasets
+// Calculate the index for the next month
+var nextMonthIndex = lastIndex + 1;
+
+// Add a new label for the next month and append a dataset for predicted sales of the next month
+labels.splice(nextMonthIndex, 0, 'Next Month');
+datasets.push({
+    label: 'Predicted Sales Next Month',
+    data: Array(nextMonthIndex).fill(null).concat([{{ $predictedNextMonthSales }}]),
+    borderColor: 'red',
+    backgroundColor: 'rgba(255, 0, 0, 0.1)',
+    fill: false
+});
+
+// Limit the chart to display only the last 12 months of data
+var labelsLimited = labels.slice(Math.max(labels.length - 12, 0));
+var datasetsLimited = datasets.map(function(dataset) {
+    return {
+        ...dataset,
+        data: dataset.data.slice(Math.max(dataset.data.length - 12, 0))
+    };
+});
+
+// Create the chart with the updated data
+var salesChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: labelsLimited,
+        datasets: datasetsLimited
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true,
+                    min: 1
+                }
+            }],
+            xAxes: [{
+                ticks: {
+                    autoSkip: false
+                }
+            }]
         },
-        options: {
-            scales: {
-                yAxes:  {
-                        beginAtZero: true,
-                        min: 1
-                    }
-               ,
-                xAxes: {
-                        autoSkip: false
-                    }
-               
-            },
-            responsive: true, // Make the chart responsive
-            maintainAspectRatio: false // Prevent chart from maintaining aspect ratio
-        }
-    });
+        responsive: true, // Make the chart responsive
+        maintainAspectRatio: false // Prevent chart from maintaining aspect ratio
+    }
+});
 </script>
+
 
 @endsection

@@ -10,14 +10,24 @@ return new class extends Migration {
    */
   public function up(): void
   {
-    Schema::create('predicted_sales', function (Blueprint $table) {
+    Schema::create('lms_g45_monthlypredictedsales', function (Blueprint $table) {
       $table->id();
+      $table->unsignedBigInteger('product_id')->nullable();
       $table->unsignedBigInteger('month'); // Assuming 'month' is the month of the prediction
       $table->decimal('predicted_sales', 10, 2);
       $table->timestamps();
 
       // Add a unique constraint on the 'month' column
       $table->unique('month');
+
+      $table->index('product_id');
+
+      $table
+        ->foreign('product_id')
+        ->references('id')
+        ->on('lms_g41_products')
+        ->onDelete('restrict')
+        ->onUpdate('cascade');
     });
   }
 
@@ -26,6 +36,6 @@ return new class extends Migration {
    */
   public function down(): void
   {
-    Schema::dropIfExists('predicted_sales');
+    Schema::dropIfExists('lms_g45_monthlypredictedsales');
   }
 };

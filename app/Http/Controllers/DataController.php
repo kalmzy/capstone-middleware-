@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Category;
-use App\Models\Product;
+use App\Models\LmsG41Product;
 use App\Models\Sale;
 use Illuminate\Http\Response;
 use Illuminate\Validation\Rule;
@@ -14,23 +13,11 @@ class DataController extends Controller
 {
   public function index(Request $request)
   {
-    $salesData = Sale::with('product')
-      ->selectRaw('SUM(quantity_sold) as total_quantity, YEAR(sale_date) as year, MONTH(sale_date) as month')
-      ->groupByRaw('YEAR(sale_date), MONTH(sale_date)')
-      ->get();
-
-    $categoryId = $request->query('category') ?? $request->input('category');
-
-    $query = Product::query();
-
-    if ($categoryId) {
-      $query->where('category_id', $categoryId);
-    }
+    $query = LmsG41Product::query();
 
     $products = $query->get();
     $selectedProductId = $request->query('product');
-    $categories = Category::all();
-    $selectedProduct = Product::find($selectedProductId);
+    $selectedProduct = LmsG41Product::find($selectedProductId);
 
     // Query the sales table and join it with the products table
     $sales = Sale::query()
@@ -39,7 +26,7 @@ class DataController extends Controller
                    SUM(quantity_sold) as total_quantity_sold, 
                    SUM(total_sale) as total_amount_sale'
       )
-      ->join('products', 'sales.product_id', '=', 'products.id')
+      ->join('lms_g41_products', 'sales.product_id', '=', 'lms_g41_products.id')
       ->where('sales.product_id', $selectedProductId)
       ->groupByRaw('MONTH(sales.created_at)')
       ->orderByRaw('MONTH(sales.created_at)')
@@ -72,17 +59,7 @@ class DataController extends Controller
 
     return view(
       'connection.datacon',
-      compact(
-        'salesData',
-        'psales',
-        'dataWithMissingMonths',
-        'products',
-        'selectedProductId',
-        'selectedProduct',
-        'categories',
-        'categoryId',
-        'sales'
-      )
+      compact('psales', 'dataWithMissingMonths', 'products', 'selectedProductId', 'selectedProduct', 'sales')
     );
   }
 }

@@ -10,14 +10,14 @@ return new class extends Migration {
    */
   public function up(): void
   {
-    Schema::create('sales', function (Blueprint $table) {
+    Schema::create('lms_g45_salesreport', function (Blueprint $table) {
       $table->id();
+      $table->date('date')->nullable();
       $table->unsignedBigInteger('product_id')->nullable();
-      $table->integer('quantity_sold');
-      $table->decimal('total_sale', 10, 2);
-      $table->date('sale_date');
+      $table->integer('total_quantity')->nullable();
       $table->timestamps();
 
+      $table->unique('date');
       $table->index('product_id');
 
       $table
@@ -34,6 +34,6 @@ return new class extends Migration {
    */
   public function down(): void
   {
-    Schema::dropIfExists('sales');
+    Schema::dropIfExists('lms_g45_salesreport');
   }
 };

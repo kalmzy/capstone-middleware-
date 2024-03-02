@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Brick\Math\BigDecimal;
 use Brick\Math\RoundingMode;
 use App\Models\Sale;
-use App\Models\Product;
+use App\Models\LmsG41Product;
 use App\Models\PredictedSale;
 
 class Page2 extends Controller
@@ -15,7 +15,7 @@ class Page2 extends Controller
   public function index(Request $request)
   {
     // Fetch data from database
-    $products = Product::all();
+    $products = LmsG41Product::all();
     $sales = Sale::query();
 
     // Check if a product is selected

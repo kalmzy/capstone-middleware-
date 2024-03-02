@@ -10,9 +10,9 @@ return new class extends Migration {
    */
   public function up(): void
   {
-    Schema::create('product_defects', function (Blueprint $table) {
+    Schema::create('lms_g45_productdefects', function (Blueprint $table) {
       $table->id();
-      $table->foreignId('product_id')->constrained();
+      $table->unsignedBigInteger('product_id')->nullable();
       $table->enum('name', [
         'Dimensional',
         'Surface',
@@ -28,6 +28,15 @@ return new class extends Migration {
       $table->enum('severity', ['low', 'medium', 'high', 'critical'])->default('medium');
       $table->string('inspector');
       $table->timestamps();
+
+      $table->index('product_id');
+
+      $table
+        ->foreign('product_id')
+        ->references('id')
+        ->on('lms_g41_products')
+        ->onDelete('restrict')
+        ->onUpdate('cascade');
     });
   }
 
@@ -36,6 +45,6 @@ return new class extends Migration {
    */
   public function down(): void
   {
-    Schema::dropIfExists('product_defects');
+    Schema::dropIfExists('lms_g45_productdefects');
   }
 };

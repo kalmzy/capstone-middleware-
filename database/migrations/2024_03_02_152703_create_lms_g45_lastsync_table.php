@@ -10,9 +10,9 @@ return new class extends Migration {
    */
   public function up(): void
   {
-    Schema::create('categories', function (Blueprint $table) {
+    Schema::create('lms_g45_lastsync', function (Blueprint $table) {
       $table->id();
-      $table->string('category_name');
+      $table->date('last_year_month')->nullable();
       $table->timestamps();
     });
   }
@@ -22,6 +22,6 @@ return new class extends Migration {
    */
   public function down(): void
   {
-    Schema::dropIfExists('categories');
+    Schema::dropIfExists('lms_g45_lastsync');
   }
 };

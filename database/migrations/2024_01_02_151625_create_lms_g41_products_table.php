@@ -10,9 +10,11 @@ return new class extends Migration {
    */
   public function up(): void
   {
-    Schema::create('last_sync', function (Blueprint $table) {
+    Schema::create('lms_g41_products', function (Blueprint $table) {
       $table->id();
-      $table->date('last_year_month')->nullable();
+      $table->string('name');
+      $table->text('description')->nullable();
+      $table->decimal('unit_price', 10, 2);
       $table->timestamps();
     });
   }
@@ -22,6 +24,6 @@ return new class extends Migration {
    */
   public function down(): void
   {
-    Schema::dropIfExists('last_sync');
+    Schema::dropIfExists('lms_g41_products');
   }
 };

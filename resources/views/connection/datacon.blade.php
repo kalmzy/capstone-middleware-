@@ -3,21 +3,6 @@
 @section('title', 'Data Connection')
 @section('content')
 <div class="row mb-4 mx-auto justify-content-center">
-    <div class="col-md-3">
-        <div class="form-group">
-            <form method="get" action="{{ route('products.filter') }}">
-                <div class="input-group">
-                    <label for="category" class="visually-hidden">Select category:</label>
-                    <select class="form-select" id="category" name="category" onchange="this.form.submit()">
-                        <option value="0">Select category</option>
-                        @foreach($categories as $category)
-                            <option value="{{ $category->id }}" {{ $categoryId == $category->id ? 'selected' : '' }}>{{ $category->category_name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </form>
-        </div>
-    </div>
 
     <div class="col-md-3">
         <div class="form-group">
@@ -27,7 +12,7 @@
                     <select class="form-select" id="product" name="product" onchange="this.form.submit()">
                         <option value="0">Select product</option>
                         @foreach($products as $product)
-                            <option value="{{ $product->id }}" {{ $selectedProductId == $product->id ? 'selected' : '' }}>{{ $product->product_name }}</option>
+                            <option value="{{ $product->id }}" {{ $selectedProductId == $product->id ? 'selected' : '' }}>{{ $product->name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -51,9 +36,9 @@
                     <tbody>
                         @foreach ($products as $item)
                             <tr>
-                                <td>{{$item->product_name}}</td>
-                                <td>{{$item->price}}</td>
-                                <td>{{$item->created_at}}</td>
+                                <td>{{$item->name}}</td>
+                                <td>{{$item->unit_price}}</td>
+                                <td>{{($item->created_at)->format('F Y')}}</td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -73,28 +58,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Unit Stock</td>
-                            @foreach ($dataWithMissingMonths as $item)
-                            @if ($item->total_quantity_sold > 0 || $loop->first)
-                              <td>{{ $selectedProduct ? $selectedProduct->price : 0 }}</td>
-                            @else
-                              <td></td>
-                            @endif
-                          @endforeach
-                          
-                        </tr>
 
                         <tr>
-                            <td>price</td>
+                            <td>Unit Price</td>
                             @foreach ($dataWithMissingMonths as $item)
                             @if ($item->total_quantity_sold > 0 || $loop->first)
-                              <td>{{ $selectedProduct ? $selectedProduct->price : 0 }}</td>
+                              <td>{{ $selectedProduct ? $selectedProduct->unit_price : 0 }}</td>
                             @else
                               <td></td>
                             @endif
-                          @endforeach
-                          
+                          @endforeach 
                         </tr>
 
                         <tr>

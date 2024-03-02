@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Sale extends Model
+class LmsG45ProductDefect extends Model
 {
   use HasFactory;
-  protected $table = 'sales';
+  protected $table = 'lms_g45_productdefects';
 
-  protected $fillable = ['product_id', 'quantity_sold', 'total_sale', 'sale_date'];
+  protected $fillable = ['product_id', 'name', 'description', 'status', 'severity', 'inspector'];
 
   public function product()
   {
