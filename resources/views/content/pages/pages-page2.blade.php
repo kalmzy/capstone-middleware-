@@ -66,6 +66,7 @@
             @if($selectedProduct)
                 <h5 class="mt-4">Predicted Sales for {{ $predictedProductName }}</h5>
                 <p>Next Month Predicted Sales: {{ $predictedNextMonthSales }}</p>
+                <p>Predicted Month: {{ $predictedMonth }}</p>
             @endif
         </div>
     </div>

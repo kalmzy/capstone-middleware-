@@ -13,12 +13,11 @@ return new class extends Migration {
     Schema::create('lms_g45_monthlypredictedsales', function (Blueprint $table) {
       $table->id();
       $table->unsignedBigInteger('product_id')->nullable();
-      $table->unsignedBigInteger('month'); // Assuming 'month' is the month of the prediction
+      $table->integer('month'); // Assuming 'month' is the month of the prediction
       $table->decimal('predicted_sales', 10, 2);
       $table->timestamps();
 
       // Add a unique constraint on the 'month' column
-      $table->unique('month');
 
       $table->index('product_id');
 

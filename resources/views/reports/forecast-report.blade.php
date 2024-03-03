@@ -103,7 +103,7 @@
                     <table class="table talbe-bordered">
                         <thead>
                             <tr>
-                                <th>ID</th>
+                           
                                 <th>Product Name</th>
                                 <th>Predicted Month</th>
                                 <th>Quantity Prediction</th>
@@ -112,11 +112,9 @@
                         <tbody>
                             @foreach ($prediction as $item)
                                 <tr>
-                                    
-                                    <td>{{$item->id}}</td>
-                                    <td>{{ $prediction->id }}</td>
-                                    <td>{{ date('F', strtotime('2024-' . $item->month . '-01')) }}</td>
-                                    <td>{{$item->predicted_sales}}</td>
+                                    <td>{{ $item->product->name }}</td>
+                                    <td>{{ $item->month }}</td>
+                                    <td>{{ $item->predicted_sales }}</td>
                                     
                                 </tr>
                             @endforeach

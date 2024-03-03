@@ -9,6 +9,7 @@ use Brick\Math\RoundingMode;
 use App\Models\Sale;
 use App\Models\LmsG41Product;
 use App\Models\PredictedSale;
+use App\Models\LmsG45MonthlyPredictedSale;
 
 class Page2 extends Controller
 {
@@ -16,7 +17,9 @@ class Page2 extends Controller
   {
     // Fetch data from database
     $products = LmsG41Product::all();
-    $sales = Sale::query();
+
+    // Fetch all sales data without filtering by product initially
+    $allSales = Sale::all();
 
     // Check if a product is selected
     $selectedProduct = $request->input('product');
@@ -26,15 +29,28 @@ class Page2 extends Controller
       $selectedProduct = $products->first()->id;
     }
 
+    // Filter sales data for the selected product if it's provided
     if ($selectedProduct) {
-      // Filter sales data for the selected product
-      $sales->where('product_id', $selectedProduct);
+      $sales = $allSales->where('product_id', $selectedProduct);
+    } else {
+      $sales = $allSales;
     }
 
-    $sales = $sales->get();
-
     // Perform regression analysis to get predicted sales for each product
-    $predictedSalesData = $this->fetchNextMonthSales($sales, $products);
+    $predictedSalesData = $this->fetchNextMonthSales($allSales, $products);
+
+    // Fetch the latest month from the sales data
+    $latestSale = $allSales->last();
+    $latestSaleMonth = $latestSale ? $latestSale->created_at->format('n') : date('n');
+
+    // Calculate the next month
+    $predictedMonth = ($latestSaleMonth + 1) % 12;
+    if ($predictedMonth == 0) {
+      $predictedMonth = 12; // Set to December if the next month exceeds 12
+    }
+
+    // Save predicted sales to the database
+    $this->savePredictedSalesToDatabase($predictedSalesData, $predictedMonth);
 
     // Return the data to the view
     return view('content.pages.pages-page2', [
@@ -44,6 +60,7 @@ class Page2 extends Controller
       'selectedProduct' => $selectedProduct,
       'predictedNextMonthSales' => $predictedSalesData[$selectedProduct]['predictedNextMonthSales'] ?? null,
       'predictedProductName' => $predictedSalesData[$selectedProduct]['predictedProductName'] ?? '',
+      'predictedMonth' => $predictedMonth,
     ]);
   }
 
@@ -143,5 +160,35 @@ class Page2 extends Controller
       'predictedNextMonthSales' => $predictedNextMonthSales,
       'regressionLine' => $regressionLine,
     ];
+  }
+
+  private function savePredictedSalesToDatabase($predictedSalesData, $predictedMonth)
+  {
+    // Get all product IDs
+    $productIds = array_keys($predictedSalesData);
+
+    // Fetch existing predictions for the predicted month and products
+    $existingPredictions = LmsG45MonthlyPredictedSale::whereIn('product_id', $productIds)
+      ->where('month', $predictedMonth)
+      ->get()
+      ->keyBy('product_id');
+
+    // Iterate through predicted sales data
+    foreach ($predictedSalesData as $productId => $prediction) {
+      // Check if an existing prediction exists for this product
+      if (isset($existingPredictions[$productId])) {
+        // Update existing prediction
+        $existingPrediction = $existingPredictions[$productId];
+        $existingPrediction->predicted_sales = $prediction['predictedNextMonthSales'];
+        $existingPrediction->save();
+      } else {
+        // Create new prediction record
+        $predictedSale = new LmsG45MonthlyPredictedSale();
+        $predictedSale->product_id = $productId;
+        $predictedSale->month = $predictedMonth;
+        $predictedSale->predicted_sales = $prediction['predictedNextMonthSales'];
+        $predictedSale->save();
+      }
+    }
   }
 }
