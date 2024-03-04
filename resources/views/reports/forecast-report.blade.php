@@ -12,8 +12,6 @@
 <div class="container mb-4">
     <div class="row">
         <div class="col-md-12">
-            
-
             <div class="card">
                 <div class="card-header">
                     <h4>product details
@@ -21,11 +19,12 @@
                 </h4>
                 </div>
                 <div class="card-body">
-                    <table class="table talbe-bordered">
+                    <table class="table table-bordered">
                         <thead>
                             <tr>
                                 <th>ID</th>
                                 <th>Product Name</th>
+                                <th>Description</th>
                                 <th>price</th>
                                 
                             </tr>
@@ -35,8 +34,8 @@
                                 <tr>
                                     <td>{{$item->id}}</td>
                                     <td>{{$item->name}}</td>
+                                    <td>{{$item->description}}</td>
                                     <td>₱{{$item->unit_price}}</td>
-                                    
                                 </tr>
                             @endforeach
                         </tbody>
@@ -50,8 +49,6 @@
 <div class="container mb-4">
     <div class="row">
         <div class="col-md-12">
-           
-
             <div class="card">
                 <div class="card-header">
                     <h4>sale details
@@ -59,7 +56,7 @@
                 </h4>
                 </div>
                 <div class="card-body">
-                    <table class="table talbe-bordered">
+                    <table class="table table-bordered">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -95,12 +92,39 @@
 
 
 
-<div class="container col-6 mb-4">
+<div class="container mb-4">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <table class="table talbe-bordered">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                           
+                                <th>Product Name</th>
+                                <th>Predicted Year</th>
+                                <th>Quantity Prediction</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($prediction as $item)
+                                <tr>
+                                    <td>{{ $item->product->name }}</td>
+                                    <td>{{ $item->month }}</td>
+                                    <td>{{ $item->predicted_sales }}</td>
+                                    
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <table class="table table-bordered">
                         <thead>
                             <tr>
                            
@@ -125,4 +149,5 @@
         </div>
     </div>
 </div>
+
 @endsection

@@ -47,6 +47,11 @@
           "url": "tasks",
           "name": "Quality Data",
           "slug": "pages-testpage"
+        },
+        {
+          "url": "quality_standard",
+          "name": "Quality Standard",
+          "slug": "pages-quality_standard"
         }
       ]
     }
