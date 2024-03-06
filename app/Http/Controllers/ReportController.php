@@ -4,16 +4,19 @@ namespace App\Http\Controllers;
 use App\Models\Sale;
 use App\Models\LmsG41Product;
 use App\Models\LmsG45MonthlyPredictedSale;
+use App\Models\LmsG45AnnualPredictedSale;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class ReportController extends Controller
 {
   public function index(Request $request)
   {
-    $prediction = LmsG45MonthlyPredictedSale::all();
+    $yearly = LmsG45AnnualPredictedSale::all();
+    $monthly = LmsG45MonthlyPredictedSale::all();
     $products = LmsG41Product::all();
     $sales = Sale::all();
-    return view('reports.forecast-report', compact('prediction', 'products', 'sales'));
+    return view('reports.forecast-report', compact('yearly','monthly', 'products', 'sales'));
   }
   public function createProduct()
   {

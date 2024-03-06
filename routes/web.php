@@ -25,6 +25,7 @@ use App\Http\Controllers\QualityStandardController;
 */
 
 
+
 Route::redirect(uri:('/'),destination:('login'));
 // Main Page Route
 // authentication

@@ -12,9 +12,9 @@ class LmsG45MonthlyPredictedSale extends Model
 
   protected $fillable = ['product_id', 'month', 'predicted_sales'];
 
-  protected $casts = [
-    'month' => 'datetime:Y-m-d',
-  ];
+ protected $casts = [
+    'month' => 'integer',
+];
 
   public function product()
   {

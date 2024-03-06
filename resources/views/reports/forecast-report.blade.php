@@ -9,7 +9,7 @@
 
 
 
-<div class="container mb-4">
+<!--<div class="container mb-4">
     <div class="row">
         <div class="col-md-12">
             <div class="card">
@@ -86,31 +86,39 @@
             </div>
         </div>
     </div>
-</div>
-
-
+</div>-->
 
 
 
 <div class="container mb-4">
+    <div class="row justify-content-center"> <!-- Add justify-content-center class here -->
+        <div class="card col-4 text-center"> <!-- Add text-center class here -->
+            <h2 class="mb-1">Forecasting Report</h2>
+        </div>
+    </div>
+</div>
+
+<div class="container mb-4">
     <div class="row">
         <div class="col-md-6">
-            <div class="card">
+            <div class="card">  
+                <div class="card-header">
+                    <h4>Monthly Forecast</h4>
+                </div>              
                 <div class="card-body">
-                    <table class="table table-bordered">
-                        <thead>
+                    <table class="table table-bordered ">
+                        <thead class="table-dark">
                             <tr>
-                           
                                 <th>Product Name</th>
-                                <th>Predicted Year</th>
+                                <th>Predicted monthly</th>
                                 <th>Quantity Prediction</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($prediction as $item)
+                            @foreach ($monthly as $item)
                                 <tr>
                                     <td>{{ $item->product->name }}</td>
-                                    <td>{{ $item->month }}</td>
+                                    <td>{{ date('F', mktime(0, 0, 0, $item->month, 1)) }}</td>
                                     <td>{{ $item->predicted_sales }}</td>
                                     
                                 </tr>
@@ -123,18 +131,20 @@
 
         <div class="col-md-6">
             <div class="card">
+                <div class="card-header">
+                    <h4>Yearly Forecast</h4>
+                </div> 
                 <div class="card-body">
                     <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                           
+                        <thead class="table-dark">
+                            <tr>                          
                                 <th>Product Name</th>
-                                <th>Predicted Month</th>
+                                <th>Predicted Yearly</th>
                                 <th>Quantity Prediction</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($prediction as $item)
+                            @foreach ($yearly as $item)
                                 <tr>
                                     <td>{{ $item->product->name }}</td>
                                     <td>{{ $item->month }}</td>
@@ -149,5 +159,6 @@
         </div>
     </div>
 </div>
+
 
 @endsection

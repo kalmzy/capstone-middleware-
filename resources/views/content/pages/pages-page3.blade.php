@@ -74,52 +74,8 @@ $configData = Helper::appClasses();
         </div>
       </div>
     </div>
-    <div class="col-sm-6 col-lg-3 mb-4">
-      <div class="card h-100">
-        <div class="card-body">
-          <br><br><br>
-          <div class="d-flex align-items-center mb-2 pb-1">
-            <div class="avatar me-2">
-              <span class="avatar-initial rounded bg-label-warning"><i class="ti ti-settings-exclamation"></i></span>
-            </div>
-            <h4 class="ms-1 mb-0">Most Defectives</h4>
-          </div>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item d-flex justify-content-between">
-              <div>
-                <div class="badge bg-label-danger me-3 rounded p-2">
-                  product 1 :
-                </div>    
-              </div>
-              <div class="text-end">
-                <span >30defect</span>
-              </div>
-            </li>
-            <li class="list-group-item d-flex justify-content-between">
-              <div>
-                <div class="badge bg-label-danger me-3 rounded p-2">
-                  product 2 :
-                </div>
-              </div>
-              <div class="text-end">
-                <span >30defect</span>
-              </div>
-            </li>
-            <li class="list-group-item d-flex justify-content-between">
-              <div>
-                <div class="badge bg-label-danger me-3 rounded p-2">
-                  product 3 :
-                </div>
-              </div>
-              <div class="text-end">
-                <span >30defect</span>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-lg-6 mb-4">
+
+    <div class="col-sm-9 col-lg-9 mb-4">
       <div class="card h-100">
         <div class="card-header header-elements">
           <div>

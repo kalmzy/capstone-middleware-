@@ -7,7 +7,7 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use App\Models\LmsG45ProductDefect;
-use App\Models\lms_g41_products;
+use App\Models\LmsG41Product;
 use Illuminate\Validation\Rule;
 
 class TaskController extends Controller
@@ -22,7 +22,7 @@ class TaskController extends Controller
 
   public function create()
   {
-    $products = lms_g41_products::all();
+    $products = LmsG41Product::all();
     return view('tasks.create', compact('products'));
   }
 
@@ -35,7 +35,6 @@ class TaskController extends Controller
       'status' => 'required|in:Open,Resolved,Closed',
       'severity' => 'required|in:Low,Medium,Critical',
       'inspector' => 'required',
-      'reported_by' => 'required',
     ]);
     LmsG45ProductDefect::create($validatedData);
 

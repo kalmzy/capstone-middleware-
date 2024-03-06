@@ -113,18 +113,7 @@ var datasets = [
     }
 ];
 
-// Calculate the index for the next month
-var nextMonthIndex = lastIndex + 1;
 
-// Add a new label for the next month and append a dataset for predicted sales of the next month
-labels.splice(nextMonthIndex, 0, 'Next Month');
-datasets.push({
-    label: 'Predicted Sales Next Month',
-    data: Array(nextMonthIndex).fill(null).concat([{{ $predictedNextMonthSales }}]),
-    borderColor: 'red',
-    backgroundColor: 'rgba(255, 0, 0, 0.1)',
-    fill: false
-});
 
 // Limit the chart to display only the last 12 months of data
 var labelsLimited = labels.slice(Math.max(labels.length - 12, 0));
